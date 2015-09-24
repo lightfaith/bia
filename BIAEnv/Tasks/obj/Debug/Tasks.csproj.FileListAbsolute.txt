@@ -1,0 +1,5 @@
+C:\Users\Vitezslav\Dropbox\ShareWork\School\7\BIA\Code\BIAEnv\Tasks\bin\Debug\Tasks.dll
+C:\Users\Vitezslav\Dropbox\ShareWork\School\7\BIA\Code\BIAEnv\Tasks\bin\Debug\Tasks.pdb
+C:\Users\Vitezslav\Dropbox\ShareWork\School\7\BIA\Code\BIAEnv\Tasks\obj\Debug\Tasks.csprojResolveAssemblyReference.cache
+C:\Users\Vitezslav\Dropbox\ShareWork\School\7\BIA\Code\BIAEnv\Tasks\obj\Debug\Tasks.dll
+C:\Users\Vitezslav\Dropbox\ShareWork\School\7\BIA\Code\BIAEnv\Tasks\obj\Debug\Tasks.pdb
