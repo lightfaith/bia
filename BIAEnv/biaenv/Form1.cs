@@ -5,10 +5,14 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using Tasks;
+using ILNumerics;
+using ILNumerics.Drawing;
+using ILNumerics.Drawing.Plotting;
 
 namespace biaenv
 {
@@ -39,13 +43,13 @@ namespace biaenv
             canvas.Init();
             task01 = new Task01(GUI.GetWidth(), GUI.GetHeight(), GUI.GetPointSize());
             task01.GeneratePoints((int)cv01numPoints.Value);
-            cv01txtBenchmark.Text = "";
+            //cv01txtBenchmark.Text = "";
             cv01txtTotal.Text = String.Format("{0}", task01.EdgeCount);
             //foreach (Tasks.Point p in task01.Points)
             //    cv01txtBenchmark.Text += String.Format("X={0}, Y={1}\r\n", p.X, p.Y);
-            canvas.DrawPoints(task01.Points);
-            canvas.DrawPath(new Path(task01.Points), true, false);
-         
+            //canvas.DrawPoints(task01.Points);
+            //canvas.DrawPath(new Path(task01.Points), true, false);
+
         }
 
         private void cv01btnBenchmark_Click(object sender, EventArgs e)
@@ -55,20 +59,206 @@ namespace biaenv
 
         private void cv01btnBenchmark_Click_1(object sender, EventArgs e)
         {
-            cv01txtBenchmark.Text += String.Format("Starting benchmark for {0} points...\r\n", task01.Points.Count);
-            Stopwatch s = new Stopwatch();
-            StringBuilder sb = new StringBuilder();
-            s.Start();
+            int LASTTOMEASURE = 10;
+            Dictionary<int, float> times = new Dictionary<int, float>();
 
-            //task01.Benchmark(sb); //I don't want debug mode...
+            cv01txtBenchmark.Text = "";
+            task01 = new Task01(GUI.GetWidth(), GUI.GetHeight(), GUI.GetPointSize());
+
+            //run one simple benchmark to avoid startup delays in statistics
+            task01.GeneratePoints(3);
             task01.Benchmark(null);
 
-            s.Stop();
-            double ms = s.Elapsed.TotalMilliseconds;
-            cv01txtBenchmark.Text += sb.ToString();
-            cv01txtBenchmark.Text += String.Format("Benchmark finished! {0} points permuted in {1} ms.\r\n", task01.Points.Count, ms);
+            for (int i = 3; i <= LASTTOMEASURE; i++)
+            {
+                task01.GeneratePoints(i);
+                cv01txtBenchmark.Text += String.Format("Starting benchmark for {0} points...\r\n", i);
+                cv01txtBenchmark.ScrollToCaret();
+                cv01txtBenchmark.Refresh();
+                Stopwatch s = new Stopwatch();
+                StringBuilder sb = new StringBuilder();
+                s.Start();
+
+                //task01.Benchmark(sb); //I don't want debug mode...
+                task01.Benchmark(null);
+
+                s.Stop();
+                double ms = s.Elapsed.TotalMilliseconds;
+                cv01txtBenchmark.Text += sb.ToString();
+                cv01txtBenchmark.Text += String.Format("Benchmark for {0} points finished in {1} ms.\r\n", i, ms);
+                cv01txtBenchmark.ScrollToCaret(); 
+                cv01txtBenchmark.Refresh();
+                times[i] = (float)Math.Round(ms/1000, 3);
+            }
+            //estimate the rest
+            for (int i = LASTTOMEASURE+1; i <= 15; i++)
+            {
+                times[i] = times[(i - 1)] * i;
+                cv01txtBenchmark.Text += String.Format("Approximating results for {0} points: {1} ms.\r\n", i, times[i]*1000);
+            }
+            chart.Plot(times);
         }
 
+        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabControl.SelectedIndex == 0)
+            {
+                canvas.Visible = false;
+                chart.Visible = true;
+                il.Visible = false;
+            }
+            else
+            {
+                canvas.Visible = false;
+                chart.Visible = false;
+                il.Visible = true;
+            }
+        }
 
+        private void il_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //MessageBox.Show(cv02cmbFunction.SelectedIndex.ToString());
+            switch (cv02cmbFunction.SelectedIndex)
+            {
+                case 0: //NOTHING
+                    {
+                        il.Scene = null;
+                        break;
+                    }
+                case 1: //FIRST DE JONG
+                    {
+                        il.Plot(Task02.FirstDeJong());
+                        break;
+                    }
+                case 2:
+                    {
+                        //TODO
+                        il.Plot(Task02.RosenbrockSaddle());
+                        break;
+                    }
+                case 3:
+                    {
+                        //3rd De Jong
+                        il.Plot(Task02.ThirdDeJong());
+                        break;
+                    }
+                case 4:
+                    {
+                        //4th De Jong
+                        il.Plot(Task02.FourthDeJong());
+                        break;
+                    }
+                case 5:
+                    {
+                        //Rastrigin's Function
+                        il.Plot(Task02.Rastrigin());
+                        break;
+                    }
+                case 6:
+                    {
+                        //Schwefel's Function
+                        il.Plot(Task02.Schwefel());
+                        break;
+                    }
+                case 7:
+                    {
+                        //Griewangk's Function
+                        il.Plot(Task02.Griewangk());
+                        break;
+                    }
+                case 8:
+                    {
+                        //Sine Envelope Sine Wave Function
+                        il.Plot(Task02.SineEnvelopeSineWave());
+                        break;
+                    }
+                case 9:
+                    {
+                        //Stretched V Sine Wave Function
+                        il.Plot(Task02.StretchedVSineWave());
+                        break;
+                    }
+                case 10:
+                    {
+                        //Ackley's Function I
+                        il.Plot(Task02.AckleyI());
+                        break;
+                    }
+                case 11:
+                    {
+                        //Ackley's Function II
+                        il.Plot(Task02.AckleyII());
+                        break;
+                    }
+                case 12:
+                    {
+                        //Egg Holder
+                        il.Plot(Task02.EggHolder());
+                        break;
+                    }
+                case 13:
+                    {
+                        //Rana's Function
+                        il.Plot(Task02.Rana());
+                        break;
+                    }
+                case 14:
+                    {
+                        //Pathological Function
+                        il.Plot(Task02.Pathological());
+                        break;
+                    }
+                case 15:
+                    {
+                        //Michalewicz's Function
+                        il.Plot(Task02.Michalewicz());
+                        break;
+                    }
+                case 16:
+                    {
+                        //Master's Cosine Wave Function
+                        il.Plot(Task02.MastersCosineWave());
+                        break;
+                    }
+                case 17:
+                    {
+                        //Tea Division
+                        il.Plot(Task02.TeaDivision());
+                        break;
+                    }
+                case 18:
+                    {
+                        //Shekel's Foxhole
+                        //TODO
+                        break;
+                    }
+                case 19:
+                    {
+                        //Pseudo-Dirak's Function
+                        //TODO
+                        break;
+                    }
+                case 20:
+                    {
+                        //Fractal Function
+                        //TODO
+                        break;
+                    }
+            } //end of switch
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //MessageBox.Show(il.Scene.First<ILPlotCube>().Rotation.ToString());
+            //il.Scene.First<ILPlotCube>().Rotation = Matrix4.Rotation(new Vector3(Convert.ToDouble(cv02txtMin.Text), Convert.ToDouble(cv02txtMax.Text), Convert.ToDouble(cv02txtStep.Text)), Math.PI / 2);
+            Task02.SetMeasures(Int32.Parse(cv02txtMin.Text), Int32.Parse(cv02txtMax.Text), (float)Convert.ToDouble(cv02txtStep.Text));
+            comboBox1_SelectedIndexChanged(sender, e);
+            //il.Refresh();
+        }
     }
 }

@@ -99,7 +99,7 @@ namespace Tasks
                     Swap(input, start, i);
                     List<Point> tmp = Permute(input, start + 1, end, sb);
                     if (start > input.Count-2) // only working with part of array, return what you have
-                        //dunno why count-2...
+                        //TODO -2 determined by trial&error... why??
                         result.AddRange(tmp);
                     else //new complete permutation has been found, print it and work on a new one
                         if (tmp.Count > 1)

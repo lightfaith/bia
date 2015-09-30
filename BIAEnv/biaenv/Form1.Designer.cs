@@ -28,8 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.cv01btnBenchmark = new System.Windows.Forms.Button();
             this.cv01txtBenchmark = new System.Windows.Forms.TextBox();
             this.cv01txtTotal = new System.Windows.Forms.TextBox();
             this.cv011lblPermutations = new System.Windows.Forms.Label();
@@ -37,12 +40,25 @@
             this.cv01btnCount = new System.Windows.Forms.Button();
             this.cv01numPoints = new System.Windows.Forms.NumericUpDown();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.cv02lblStep = new System.Windows.Forms.Label();
+            this.cv02lblMax = new System.Windows.Forms.Label();
+            this.cv02lblMin = new System.Windows.Forms.Label();
+            this.cv02txtStep = new System.Windows.Forms.TextBox();
+            this.cv02txtMax = new System.Windows.Forms.TextBox();
+            this.cv02txtMin = new System.Windows.Forms.TextBox();
+            this.cv02btnSettings = new System.Windows.Forms.Button();
+            this.cv02cmbFunction = new System.Windows.Forms.ComboBox();
             this.canvas = new System.Windows.Forms.PictureBox();
-            this.cv01btnBenchmark = new System.Windows.Forms.Button();
+            this.il = new ILNumerics.Drawing.ILPanel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cv01numPoints)).BeginInit();
+            this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl
@@ -54,8 +70,9 @@
             this.tabControl.Location = new System.Drawing.Point(12, 12);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(601, 114);
+            this.tabControl.Size = new System.Drawing.Size(439, 114);
             this.tabControl.TabIndex = 0;
+            this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
             // 
             // tabPage1
             // 
@@ -69,19 +86,32 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(593, 88);
+            this.tabPage1.Size = new System.Drawing.Size(431, 88);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "01 - Limity";
+            this.tabPage1.Text = "01 - Trajektorie";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // cv01btnBenchmark
+            // 
+            this.cv01btnBenchmark.Location = new System.Drawing.Point(93, 32);
+            this.cv01btnBenchmark.Name = "cv01btnBenchmark";
+            this.cv01btnBenchmark.Size = new System.Drawing.Size(78, 23);
+            this.cv01btnBenchmark.TabIndex = 8;
+            this.cv01btnBenchmark.Text = "Benchmark";
+            this.cv01btnBenchmark.UseVisualStyleBackColor = true;
+            this.cv01btnBenchmark.Click += new System.EventHandler(this.cv01btnBenchmark_Click_1);
             // 
             // cv01txtBenchmark
             // 
+            this.cv01txtBenchmark.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cv01txtBenchmark.Location = new System.Drawing.Point(177, 6);
             this.cv01txtBenchmark.Multiline = true;
             this.cv01txtBenchmark.Name = "cv01txtBenchmark";
             this.cv01txtBenchmark.ReadOnly = true;
             this.cv01txtBenchmark.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.cv01txtBenchmark.Size = new System.Drawing.Size(410, 75);
+            this.cv01txtBenchmark.Size = new System.Drawing.Size(248, 75);
             this.cv01txtBenchmark.TabIndex = 7;
             // 
             // cv01txtTotal
@@ -144,51 +174,185 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.cv02lblStep);
+            this.tabPage2.Controls.Add(this.cv02lblMax);
+            this.tabPage2.Controls.Add(this.cv02lblMin);
+            this.tabPage2.Controls.Add(this.cv02txtStep);
+            this.tabPage2.Controls.Add(this.cv02txtMax);
+            this.tabPage2.Controls.Add(this.cv02txtMin);
+            this.tabPage2.Controls.Add(this.cv02btnSettings);
+            this.tabPage2.Controls.Add(this.cv02cmbFunction);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(593, 112);
+            this.tabPage2.Size = new System.Drawing.Size(431, 88);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "02 - ";
+            this.tabPage2.Text = "02 - Funkce";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // cv02lblStep
+            // 
+            this.cv02lblStep.AutoSize = true;
+            this.cv02lblStep.Location = new System.Drawing.Point(342, 9);
+            this.cv02lblStep.Name = "cv02lblStep";
+            this.cv02lblStep.Size = new System.Drawing.Size(32, 13);
+            this.cv02lblStep.TabIndex = 7;
+            this.cv02lblStep.Text = "Step:";
+            // 
+            // cv02lblMax
+            // 
+            this.cv02lblMax.AutoSize = true;
+            this.cv02lblMax.Location = new System.Drawing.Point(271, 9);
+            this.cv02lblMax.Name = "cv02lblMax";
+            this.cv02lblMax.Size = new System.Drawing.Size(30, 13);
+            this.cv02lblMax.TabIndex = 6;
+            this.cv02lblMax.Text = "Max:";
+            // 
+            // cv02lblMin
+            // 
+            this.cv02lblMin.AutoSize = true;
+            this.cv02lblMin.Location = new System.Drawing.Point(202, 9);
+            this.cv02lblMin.Name = "cv02lblMin";
+            this.cv02lblMin.Size = new System.Drawing.Size(27, 13);
+            this.cv02lblMin.TabIndex = 5;
+            this.cv02lblMin.Text = "Min:";
+            // 
+            // cv02txtStep
+            // 
+            this.cv02txtStep.Location = new System.Drawing.Point(380, 6);
+            this.cv02txtStep.Name = "cv02txtStep";
+            this.cv02txtStep.Size = new System.Drawing.Size(34, 20);
+            this.cv02txtStep.TabIndex = 4;
+            this.cv02txtStep.Text = "1";
+            // 
+            // cv02txtMax
+            // 
+            this.cv02txtMax.Location = new System.Drawing.Point(302, 6);
+            this.cv02txtMax.Name = "cv02txtMax";
+            this.cv02txtMax.Size = new System.Drawing.Size(34, 20);
+            this.cv02txtMax.TabIndex = 3;
+            this.cv02txtMax.Text = "20";
+            // 
+            // cv02txtMin
+            // 
+            this.cv02txtMin.Location = new System.Drawing.Point(231, 6);
+            this.cv02txtMin.Name = "cv02txtMin";
+            this.cv02txtMin.Size = new System.Drawing.Size(34, 20);
+            this.cv02txtMin.TabIndex = 2;
+            this.cv02txtMin.Text = "-20";
+            // 
+            // cv02btnSettings
+            // 
+            this.cv02btnSettings.Location = new System.Drawing.Point(339, 32);
+            this.cv02btnSettings.Name = "cv02btnSettings";
+            this.cv02btnSettings.Size = new System.Drawing.Size(75, 23);
+            this.cv02btnSettings.TabIndex = 1;
+            this.cv02btnSettings.Text = "Set";
+            this.cv02btnSettings.UseVisualStyleBackColor = true;
+            this.cv02btnSettings.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // cv02cmbFunction
+            // 
+            this.cv02cmbFunction.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cv02cmbFunction.FormattingEnabled = true;
+            this.cv02cmbFunction.Items.AddRange(new object[] {
+            "",
+            "1st De Jong",
+            "Rosenbrock\'s Saddle",
+            "3rd De Jong",
+            "4th De Jong",
+            "Rastrigin\'s Function",
+            "Schwefel\'s Function",
+            "Griewangk\'s Function",
+            "Sine Envelope Sine Wave Function",
+            "Stretched V Sine Wave Function",
+            "Ackley\'s Function I",
+            "Ackley\'s Function II",
+            "Egg Holder",
+            "Rana\'s Function",
+            "Pathological Function",
+            "Michalewicz\'s Function",
+            "Master\'s Cosine Wave Function",
+            "Tea Division",
+            "Shekel\'s Foxhole",
+            "Pseudo-Dirak\'s Function",
+            "Fractal Function"});
+            this.cv02cmbFunction.Location = new System.Drawing.Point(6, 6);
+            this.cv02cmbFunction.Name = "cv02cmbFunction";
+            this.cv02cmbFunction.Size = new System.Drawing.Size(190, 21);
+            this.cv02cmbFunction.TabIndex = 0;
+            this.cv02cmbFunction.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // canvas
             // 
-            this.canvas.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.canvas.Location = new System.Drawing.Point(12, 132);
+            this.canvas.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.canvas.Location = new System.Drawing.Point(0, 0);
             this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(601, 243);
+            this.canvas.Size = new System.Drawing.Size(439, 373);
             this.canvas.TabIndex = 2;
             this.canvas.TabStop = false;
+            this.canvas.Visible = false;
             this.canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.canvas_Paint);
             // 
-            // cv01btnBenchmark
+            // il
             // 
-            this.cv01btnBenchmark.Location = new System.Drawing.Point(93, 32);
-            this.cv01btnBenchmark.Name = "cv01btnBenchmark";
-            this.cv01btnBenchmark.Size = new System.Drawing.Size(78, 23);
-            this.cv01btnBenchmark.TabIndex = 8;
-            this.cv01btnBenchmark.Text = "Benchmark";
-            this.cv01btnBenchmark.UseVisualStyleBackColor = true;
-            this.cv01btnBenchmark.Click += new System.EventHandler(this.cv01btnBenchmark_Click_1);
+            this.il.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.il.Driver = ILNumerics.Drawing.RendererTypes.GDI;
+            this.il.Editor = null;
+            this.il.Location = new System.Drawing.Point(0, 0);
+            this.il.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.il.Name = "il";
+            this.il.Rectangle = ((System.Drawing.RectangleF)(resources.GetObject("il.Rectangle")));
+            this.il.ShowUIControls = false;
+            this.il.Size = new System.Drawing.Size(439, 373);
+            this.il.TabIndex = 3;
+            this.il.Visible = false;
+            // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.chart);
+            this.panel1.Controls.Add(this.canvas);
+            this.panel1.Controls.Add(this.il);
+            this.panel1.Location = new System.Drawing.Point(12, 129);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(439, 373);
+            this.panel1.TabIndex = 4;
+            // 
+            // chart
+            // 
+            chartArea1.Name = "ChartArea1";
+            this.chart.ChartAreas.Add(chartArea1);
+            this.chart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chart.Location = new System.Drawing.Point(0, 0);
+            this.chart.Name = "chart";
+            this.chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Fire;
+            this.chart.Size = new System.Drawing.Size(439, 373);
+            this.chart.TabIndex = 4;
+            this.chart.Text = "chart1";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(625, 387);
-            this.Controls.Add(this.canvas);
+            this.ClientSize = new System.Drawing.Size(463, 514);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.tabControl);
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "BIA";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cv01numPoints)).EndInit();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).EndInit();
+            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chart)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -206,6 +370,17 @@
         private System.Windows.Forms.Button cv01btnCount;
         private System.Windows.Forms.NumericUpDown cv01numPoints;
         private System.Windows.Forms.Button cv01btnBenchmark;
+        private ILNumerics.Drawing.ILPanel il;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.ComboBox cv02cmbFunction;
+        private System.Windows.Forms.Button cv02btnSettings;
+        private System.Windows.Forms.TextBox cv02txtStep;
+        private System.Windows.Forms.TextBox cv02txtMax;
+        private System.Windows.Forms.TextBox cv02txtMin;
+        private System.Windows.Forms.Label cv02lblStep;
+        private System.Windows.Forms.Label cv02lblMax;
+        private System.Windows.Forms.Label cv02lblMin;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart;
     }
 }
 
