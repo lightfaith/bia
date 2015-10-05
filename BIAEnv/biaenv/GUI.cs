@@ -109,7 +109,93 @@ namespace biaenv
 
         #endregion
 
-        public static void Plot(this Chart chart, Dictionary<int,float> input) 
+        
+  
+        public static void Plot(this ILPanel panel, Task02.func f)
+        {
+            ILScene scene = null;
+            // define X and Y range
+            //ILArray<float> X = ILMath.vec<float>(Task02.Min, Task02.Step, Task02.Max);
+            //ILArray<float> Y = ILMath.vec<float>(Task02.Min, Task02.Step, Task02.Max);
+
+            // compute X and Y coordinates for every grid point
+            //ILArray<float> YMat = 1; // provide YMat as output to meshgrid
+            //ILArray<float> XMat = ILMath.meshgrid(X, Y, YMat); // only need mesh for 2D function here
+
+            
+            // setup the scene + plot cube + surface 
+            scene = new ILScene() {
+                new ILPlotCube(twoDMode: false) {
+                     new ILSurface(new Func<float,float,float>(f), 
+                         Task02.Min, Task02.Max, (int)((Task02.Max-Task02.Min)*Task02.Step+1),
+                         Task02.Min, Task02.Max, (int)((Task02.Max-Task02.Min)*Task02.Step+1),
+                         colormap: Colormaps.Hsv) {
+                        UseLighting = true, 
+                        
+                 }
+                }
+            };
+            scene.First<ILPlotCube>().Rotation = Matrix4.Rotation(new Vector3(2, 0.55, 0.64), Math.PI / 2);
+
+            panel.Scene = scene;
+            panel.Refresh();
+        }
+
+        public static void Plot(this ILPanel panel, Task02.func4D input)
+        {
+            ILScene scene = null;
+            // define X and Y range
+            ILArray<float> X = ILMath.vec<float>(-5.0, 1, 5.0);
+            ILArray<float> Y = ILMath.vec<float>(-5.0, 1, 5.0);
+
+            // compute X and Y coordinates for every grid point
+            ILArray<float> YMat = 1; // provide YMat as output to meshgrid
+            ILArray<float> XMat = ILMath.meshgrid(X, Y, YMat); // only need mesh for 2D function here
+
+            // preallocate data array for ILSurface: X by Y by 3
+            // Note the order: 3 matrix slices of X by Y each, for Z,X,Y coordinates of every grid point
+            /*ILArray<float> A = ILMath.zeros<float>(Y.Length, X.Length, 1);
+
+            // fill in Z values (replace this with your own function / data!!)
+            A[":;:;0"] = ILMath.multiply(XMat,XMat)+ILMath.multiply(YMat, YMat);
+            A[":;:;1"] = XMat; // X coordinates for every grid point
+            A[":;:;2"] = YMat; // Y coordinates for every grid point*/
+            
+            
+            /*ILArray<float> A = input;
+
+            // setup the scene + plot cube + surface 
+            scene = new ILScene() {
+                new ILPlotCube(twoDMode: false) {
+                     new ILSurface(A, colormap: Colormaps.Hsv) {
+                        UseLighting = true, 
+                        
+                 }
+                }
+            */
+            scene.First<ILPlotCube>().Rotation = Matrix4.Rotation(new Vector3(2, 0.55, 0.64), Math.PI / 2);
+
+            /*scene = new ILScene()
+            {
+                new ILPlotCube(twoDMode: false)
+                {
+                    //new ILSurface((x, y) => (float)(Math.Sin(x) * Math.Cos(y) * Math.Exp(-(x * x * y * y) / 4)), 
+                    new ILSurface((x, y) => (float)(x*x+y*y), 
+                    xmin: -5, xmax: 5, xlen: 20,
+                    ymin: -5, ymax: 5, ylen: 20,              
+                    //CFunc: (x,y) => x * y * (float)Math.Tanh(x * y), 
+                    colormap: Colormaps.Hsv) 
+                    { 
+                        UseLighting = true, 
+                        //Children = { new ILColorbar() }
+                    }
+                }
+            };
+            scene.First<ILPlotCube>().Rotation = Matrix4.Rotation(new Vector3(1, 1, 1), 1f);*/
+            panel.Scene = scene;
+            panel.Refresh();
+        }
+        public static void Plot(this Chart chart, Dictionary<int, float> input)
         {
             chart.ChartAreas.Clear();
             chart.ChartAreas.Add(new ChartArea());
@@ -118,7 +204,7 @@ namespace biaenv
             chart.Titles.Add("Hledání trajektorií");
 
             Series s = new Series();
-            foreach(KeyValuePair<int,float> kv in input)
+            foreach (KeyValuePair<int, float> kv in input)
                 s.Points.AddXY(kv.Key, kv.Value);
 
             //Series s = chart.Series.Add(series[i].ToShortDateString());
@@ -141,112 +227,8 @@ namespace biaenv
             chart.ChartAreas[0].AxisY.Title = "Time [s]";
             chart.ChartAreas[0].AxisX.Title = "Points";
         }
-        
-        public static void Plot(this ILPanel panel, float[,] input)
-        {
-            ILScene scene = null;
-            // define X and Y range
-            ILArray<float> X = ILMath.vec<float>(-5.0, 1, 5.0);
-            ILArray<float> Y = ILMath.vec<float>(-5.0, 1, 5.0);
-
-            // compute X and Y coordinates for every grid point
-            ILArray<float> YMat = 1; // provide YMat as output to meshgrid
-            ILArray<float> XMat = ILMath.meshgrid(X, Y, YMat); // only need mesh for 2D function here
-
-            // preallocate data array for ILSurface: X by Y by 3
-            // Note the order: 3 matrix slices of X by Y each, for Z,X,Y coordinates of every grid point
-            /*ILArray<float> A = ILMath.zeros<float>(Y.Length, X.Length, 1);
-
-            // fill in Z values (replace this with your own function / data!!)
-            A[":;:;0"] = ILMath.multiply(XMat,XMat)+ILMath.multiply(YMat, YMat);
-            A[":;:;1"] = XMat; // X coordinates for every grid point
-            A[":;:;2"] = YMat; // Y coordinates for every grid point*/
-            ILArray<float> A = input;
-
-            // setup the scene + plot cube + surface 
-            scene = new ILScene() {
-                new ILPlotCube(twoDMode: false) {
-                     new ILSurface(A, colormap: Colormaps.Hsv) {
-                        UseLighting = true, 
-                        
-                 }
-                }
-            };
-            scene.First<ILPlotCube>().Rotation = Matrix4.Rotation(new Vector3(2, 0.55, 0.64), Math.PI / 2);
-
-            /*scene = new ILScene()
-            {
-                new ILPlotCube(twoDMode: false)
-                {
-                    //new ILSurface((x, y) => (float)(Math.Sin(x) * Math.Cos(y) * Math.Exp(-(x * x * y * y) / 4)), 
-                    new ILSurface((x, y) => (float)(x*x+y*y), 
-                    xmin: -5, xmax: 5, xlen: 20,
-                    ymin: -5, ymax: 5, ylen: 20,              
-                    //CFunc: (x,y) => x * y * (float)Math.Tanh(x * y), 
-                    colormap: Colormaps.Hsv) 
-                    { 
-                        UseLighting = true, 
-                        //Children = { new ILColorbar() }
-                    }
-                }
-            };
-            scene.First<ILPlotCube>().Rotation = Matrix4.Rotation(new Vector3(1, 1, 1), 1f);*/
-            panel.Scene = scene;
-            panel.Refresh();
-        }
-
-        public static void Plot(this ILPanel panel, float[,,] input)
-        {
-            ILScene scene = null;
-            // define X and Y range
-            ILArray<float> X = ILMath.vec<float>(-5.0, 1, 5.0);
-            ILArray<float> Y = ILMath.vec<float>(-5.0, 1, 5.0);
-
-            // compute X and Y coordinates for every grid point
-            ILArray<float> YMat = 1; // provide YMat as output to meshgrid
-            ILArray<float> XMat = ILMath.meshgrid(X, Y, YMat); // only need mesh for 2D function here
-
-            // preallocate data array for ILSurface: X by Y by 3
-            // Note the order: 3 matrix slices of X by Y each, for Z,X,Y coordinates of every grid point
-            /*ILArray<float> A = ILMath.zeros<float>(Y.Length, X.Length, 1);
-
-            // fill in Z values (replace this with your own function / data!!)
-            A[":;:;0"] = ILMath.multiply(XMat,XMat)+ILMath.multiply(YMat, YMat);
-            A[":;:;1"] = XMat; // X coordinates for every grid point
-            A[":;:;2"] = YMat; // Y coordinates for every grid point*/
-            ILArray<float> A = input;
-
-            // setup the scene + plot cube + surface 
-            scene = new ILScene() {
-                new ILPlotCube(twoDMode: false) {
-                     new ILSurface(A, colormap: Colormaps.Hsv) {
-                        UseLighting = true, 
-                        
-                 }
-                }
-            };
-            scene.First<ILPlotCube>().Rotation = Matrix4.Rotation(new Vector3(2, 0.55, 0.64), Math.PI / 2);
-
-            /*scene = new ILScene()
-            {
-                new ILPlotCube(twoDMode: false)
-                {
-                    //new ILSurface((x, y) => (float)(Math.Sin(x) * Math.Cos(y) * Math.Exp(-(x * x * y * y) / 4)), 
-                    new ILSurface((x, y) => (float)(x*x+y*y), 
-                    xmin: -5, xmax: 5, xlen: 20,
-                    ymin: -5, ymax: 5, ylen: 20,              
-                    //CFunc: (x,y) => x * y * (float)Math.Tanh(x * y), 
-                    colormap: Colormaps.Hsv) 
-                    { 
-                        UseLighting = true, 
-                        //Children = { new ILColorbar() }
-                    }
-                }
-            };
-            scene.First<ILPlotCube>().Rotation = Matrix4.Rotation(new Vector3(1, 1, 1), 1f);*/
-            panel.Scene = scene;
-            panel.Refresh();
-        }
-    
     }
+
+          
+  
 }

@@ -65,7 +65,7 @@ namespace Tasks
             }*/
             List<Point> pointstopermutate = new List<Point>();
             pointstopermutate.AddRange(Points);
-            Permute(pointstopermutate, 0, pointstopermutate.Count - 1, sb);
+            Permute(pointstopermutate, 1, pointstopermutate.Count - 1, sb);
 
             if (sb == null)
                 return "";
@@ -82,11 +82,6 @@ namespace Tasks
 
         public List<Point> Permute(List<Point> input, int start, int end, StringBuilder sb)
         {
-            if ((start == 0 && end - start > 7) && sb != null)
-            {
-                sb.Append("Logging is off...\r\n");
-                sb = null;
-            }
             if (start == end)
             {
                 return input;

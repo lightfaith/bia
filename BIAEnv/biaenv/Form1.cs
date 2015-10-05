@@ -59,7 +59,7 @@ namespace biaenv
 
         private void cv01btnBenchmark_Click_1(object sender, EventArgs e)
         {
-            int LASTTOMEASURE = 10;
+            int LASTTOMEASURE = 11;
             Dictionary<int, float> times = new Dictionary<int, float>();
 
             cv01txtBenchmark.Text = "";
@@ -79,8 +79,11 @@ namespace biaenv
                 StringBuilder sb = new StringBuilder();
                 s.Start();
 
-                //task01.Benchmark(sb); //I don't want debug mode...
-                task01.Benchmark(null);
+                bool debugmode = false;
+                if(task01.Points.Count<8 && debugmode)
+                    task01.Benchmark(sb); //debug mode
+                else
+                    task01.Benchmark(null); //no debug mode
 
                 s.Stop();
                 double ms = s.Elapsed.TotalMilliseconds;
@@ -89,12 +92,16 @@ namespace biaenv
                 cv01txtBenchmark.ScrollToCaret(); 
                 cv01txtBenchmark.Refresh();
                 times[i] = (float)Math.Round(ms/1000, 3);
+                chart.Plot(times);
+                chart.Refresh();
             }
             //estimate the rest
             for (int i = LASTTOMEASURE+1; i <= 15; i++)
             {
                 times[i] = times[(i - 1)] * i;
-                cv01txtBenchmark.Text += String.Format("Approximating results for {0} points: {1} ms.\r\n", i, times[i]*1000);
+                chart.Plot(times);
+                cv01txtBenchmark.Text += String.Format("Approximated results for {0} points: {1} ms.\r\n", i, times[i]*1000);
+                chart.Refresh();
             }
             chart.Plot(times);
         }
@@ -120,8 +127,18 @@ namespace biaenv
 
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void Draw(object sender, EventArgs e)
         {
+            
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //MessageBox.Show(il.Scene.First<ILPlotCube>().Rotation.ToString());
+            //il.Scene.First<ILPlotCube>().Rotation = Matrix4.Rotation(new Vector3(Convert.ToDouble(cv02txtMin.Text), Convert.ToDouble(cv02txtMax.Text), Convert.ToDouble(cv02txtStep.Text)), Math.PI / 2);
+            Task02.SetMeasures((float)Double.Parse(cv02txtMin.Text), (float)Double.Parse(cv02txtMax.Text), (float)Double.Parse(cv02txtStep.Text));
+
+
             //MessageBox.Show(cv02cmbFunction.SelectedIndex.ToString());
             switch (cv02cmbFunction.SelectedIndex)
             {
@@ -250,14 +267,6 @@ namespace biaenv
                         break;
                     }
             } //end of switch
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //MessageBox.Show(il.Scene.First<ILPlotCube>().Rotation.ToString());
-            //il.Scene.First<ILPlotCube>().Rotation = Matrix4.Rotation(new Vector3(Convert.ToDouble(cv02txtMin.Text), Convert.ToDouble(cv02txtMax.Text), Convert.ToDouble(cv02txtStep.Text)), Math.PI / 2);
-            Task02.SetMeasures(Int32.Parse(cv02txtMin.Text), Int32.Parse(cv02txtMax.Text), (float)Convert.ToDouble(cv02txtStep.Text));
-            comboBox1_SelectedIndexChanged(sender, e);
             //il.Refresh();
         }
     }

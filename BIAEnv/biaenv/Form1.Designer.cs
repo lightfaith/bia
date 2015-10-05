@@ -93,9 +93,9 @@
             // 
             // cv01btnBenchmark
             // 
-            this.cv01btnBenchmark.Location = new System.Drawing.Point(93, 32);
+            this.cv01btnBenchmark.Location = new System.Drawing.Point(9, 58);
             this.cv01btnBenchmark.Name = "cv01btnBenchmark";
-            this.cv01btnBenchmark.Size = new System.Drawing.Size(78, 23);
+            this.cv01btnBenchmark.Size = new System.Drawing.Size(162, 23);
             this.cv01btnBenchmark.TabIndex = 8;
             this.cv01btnBenchmark.Text = "Benchmark";
             this.cv01btnBenchmark.UseVisualStyleBackColor = true;
@@ -116,7 +116,7 @@
             // 
             // cv01txtTotal
             // 
-            this.cv01txtTotal.Location = new System.Drawing.Point(83, 61);
+            this.cv01txtTotal.Location = new System.Drawing.Point(83, 35);
             this.cv01txtTotal.Name = "cv01txtTotal";
             this.cv01txtTotal.ReadOnly = true;
             this.cv01txtTotal.Size = new System.Drawing.Size(88, 20);
@@ -125,7 +125,7 @@
             // cv011lblPermutations
             // 
             this.cv011lblPermutations.AutoSize = true;
-            this.cv011lblPermutations.Location = new System.Drawing.Point(6, 64);
+            this.cv011lblPermutations.Location = new System.Drawing.Point(6, 38);
             this.cv011lblPermutations.Name = "cv011lblPermutations";
             this.cv011lblPermutations.Size = new System.Drawing.Size(71, 13);
             this.cv011lblPermutations.TabIndex = 5;
@@ -134,7 +134,7 @@
             // cv01lblPoints
             // 
             this.cv01lblPoints.AutoSize = true;
-            this.cv01lblPoints.Location = new System.Drawing.Point(6, 8);
+            this.cv01lblPoints.Location = new System.Drawing.Point(6, 11);
             this.cv01lblPoints.Name = "cv01lblPoints";
             this.cv01lblPoints.Size = new System.Drawing.Size(39, 13);
             this.cv01lblPoints.TabIndex = 4;
@@ -142,7 +142,7 @@
             // 
             // cv01btnCount
             // 
-            this.cv01btnCount.Location = new System.Drawing.Point(6, 32);
+            this.cv01btnCount.Location = new System.Drawing.Point(90, 6);
             this.cv01btnCount.Name = "cv01btnCount";
             this.cv01btnCount.Size = new System.Drawing.Size(81, 23);
             this.cv01btnCount.TabIndex = 2;
@@ -152,7 +152,7 @@
             // 
             // cv01numPoints
             // 
-            this.cv01numPoints.Location = new System.Drawing.Point(51, 6);
+            this.cv01numPoints.Location = new System.Drawing.Point(51, 9);
             this.cv01numPoints.Maximum = new decimal(new int[] {
             15,
             0,
@@ -164,7 +164,7 @@
             0,
             0});
             this.cv01numPoints.Name = "cv01numPoints";
-            this.cv01numPoints.Size = new System.Drawing.Size(120, 20);
+            this.cv01numPoints.Size = new System.Drawing.Size(33, 20);
             this.cv01numPoints.TabIndex = 0;
             this.cv01numPoints.Value = new decimal(new int[] {
             3,
@@ -243,11 +243,11 @@
             // 
             // cv02btnSettings
             // 
-            this.cv02btnSettings.Location = new System.Drawing.Point(339, 32);
+            this.cv02btnSettings.Location = new System.Drawing.Point(205, 32);
             this.cv02btnSettings.Name = "cv02btnSettings";
-            this.cv02btnSettings.Size = new System.Drawing.Size(75, 23);
+            this.cv02btnSettings.Size = new System.Drawing.Size(209, 23);
             this.cv02btnSettings.TabIndex = 1;
-            this.cv02btnSettings.Text = "Set";
+            this.cv02btnSettings.Text = "Draw";
             this.cv02btnSettings.UseVisualStyleBackColor = true;
             this.cv02btnSettings.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -281,7 +281,6 @@
             this.cv02cmbFunction.Name = "cv02cmbFunction";
             this.cv02cmbFunction.Size = new System.Drawing.Size(190, 21);
             this.cv02cmbFunction.TabIndex = 0;
-            this.cv02cmbFunction.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // canvas
             // 
