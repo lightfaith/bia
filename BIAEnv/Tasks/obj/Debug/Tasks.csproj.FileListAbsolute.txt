@@ -12,3 +12,4 @@ C:\Users\Vitezslav\Dropbox\ShareWork\School\7\BIA\Code\bia\BIAEnv\Tasks\bin\Debu
 C:\Users\Vitezslav\Dropbox\ShareWork\School\7\BIA\Code\bia\BIAEnv\Tasks\bin\Debug\Tasks.pdb
 C:\Users\Vitezslav\Dropbox\ShareWork\School\7\BIA\Code\bia\BIAEnv\Tasks\obj\Debug\Tasks.dll
 C:\Users\Vitezslav\Dropbox\ShareWork\School\7\BIA\Code\bia\BIAEnv\Tasks\obj\Debug\Tasks.pdb
+C:\Users\Vitezslav\Dropbox\ShareWork\School\7\BIA\Code\bia\BIAEnv\Tasks\obj\Debug\Tasks.csprojResolveAssemblyReference.cache

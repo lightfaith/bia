@@ -8,8 +8,7 @@ namespace Tasks
 {
     public class Task02
     {
-        public delegate float func(float x, float y);
-        public delegate float func4D(float x, float y, float z);
+        
         private static float min=-10;
         private static float max=10;
         private static float step=1;
@@ -73,52 +72,52 @@ namespace Tasks
             return result;
         }
         */
-        public static func FirstDeJong()
+        public static Lib.func FirstDeJong()
         {
             return ((x, y) => ((float)(Math.Pow(x, 2) + Math.Pow(y, 2))));
         }
 
-        public static func RosenbrockSaddle() 
+        public static Lib.func RosenbrockSaddle() 
         {
             // for 3D only!
             return ((x,y)=>(float)(100*Math.Pow(x*x-y,2)+Math.Pow(1-x, 2)));
         }
 
-        public static func ThirdDeJong()
+        public static Lib.func ThirdDeJong()
         {
             return ((x, y) => (Math.Abs(x) + Math.Abs(y)));
         }
 
-        public static func FourthDeJong()
+        public static Lib.func FourthDeJong()
         {
             return ((x, y) => ((float)(Math.Pow(x, 4) + Math.Pow(y, 4))));
         }
 
-        public static func Rastrigin()
+        public static Lib.func Rastrigin()
         {
             //TODO BAD
             return ((x, y) => (float)(4 * (x*x - 10 * Math.Cos(2 * PI * x) + y*y - 10 * Math.Cos(2 * PI * y))));
         }
 
-        public static func Schwefel()
+        public static Lib.func Schwefel()
         {
             //TODO BAD
             return ((x, y) => (float)(-x * Math.Sin(Math.Sqrt(Math.Abs(x))) + -y * Math.Sin(Math.Sqrt(Math.Abs(y)))));
         }
 
-        public static func Griewangk()
+        public static Lib.func Griewangk()
         {
             return ((x, y) => (float)(1 + (x * x / 4000 + y * y / 4000) - (Math.Cos(x / 1) * Math.Cos(y / Math.Sqrt(2)))));
         }
 
-        public static func SineEnvelopeSineWave()
+        public static Lib.func SineEnvelopeSineWave()
         {
             //for 3D only!
             //TODO BAD
             return ((x, y) => (float)(-(0.5+(Math.Pow(Math.Sin(x*x+y*y-0.5),2))/(Math.Pow(1+0.001*(x*x+y*y),2)))));
         }
 
-        public static func StretchedVSineWave() 
+        public static Lib.func StretchedVSineWave() 
         {
             //for 3D only!
             //TODO BAD
@@ -126,50 +125,50 @@ namespace Tasks
         }
 
 
-        public static func AckleyI() 
+        public static Lib.func AckleyI() 
         {
             //for 3D only!
             //TODO PROBABLY BAD
             return ((x,y)=>(float)(1/Math.Pow(E,5)*Math.Sqrt(x*x+y*y)+3*(Math.Cos(2*x)+Math.Sin(2*y))));
         }
 
-        public static func AckleyII()
+        public static Lib.func AckleyII()
         {
             //for 3D only!
             return ((x,y)=>(float)(20+E-(20/Math.Pow(E,0.2*Math.Sqrt((x*x+y*y)/2)))-Math.Pow(E, 0.5*Math.Cos(2*PI*x)+Math.Cos(2*PI*y))));
         }
 
-        public static func EggHolder() 
+        public static Lib.func EggHolder() 
         {
             return ((x,y)=>(float)(-x*Math.Sin(Math.Sqrt(Math.Abs(x-y-47)))-(x+47)*Math.Sin(Math.Sqrt(Math.Abs(y+47+x/2)))));
         }
 
-        public static func Rana() 
+        public static Lib.func Rana() 
         {
             //for 3D only!
             return ((x,y)=>(float)(x*Math.Sin(Math.Sqrt(Math.Abs(y+1-x)))*Math.Cos(Math.Sqrt(Math.Abs(y+1+x)))+(y+1)*Math.Cos(Math.Sqrt(Math.Abs(y+1-x)))*Math.Sin(Math.Sqrt(Math.Abs(y+1+x)))));
         }
 
-        public static func Pathological() 
+        public static Lib.func Pathological() 
         {
             //for 3D only!
             return ((x,y)=>(float)(0.5+(Math.Pow(Math.Sin(Math.Sqrt(100*x*x-y*y)),2)-0.5)/(1+0.001*Math.Pow(x*x-2*x*y+y*y,2))));
         }
 
-        public static func Michalewicz() 
+        public static Lib.func Michalewicz() 
         {
             //for 3D only!
             //TODO CORRECT?
             return ((x,y)=>(float)(-(Math.Sin(x)*Math.Pow(Math.Sin(x*x/PI), 20)+Math.Sin(y)*Math.Pow(Math.Sin(2*x*x/PI), 20))));
         }
 
-        public static func MastersCosineWave() 
+        public static Lib.func MastersCosineWave() 
         {
         //for 3D only!
             return ((x,y)=>(float)(Math.Pow(E, -(x*x+y*y+0.5*x*y)/8)*Math.Cos(4*Math.Sqrt(x*x+y*y+0.5*x*y))));
         }
 
-        public static func4D TeaDivision()
+        public static Lib.func4D TeaDivision()
         {
             //TODO BAD
             return ((x, y, z) => (float)(-(2 * x + 3 * y + 2 * z) * ((10 * x + 6 * y + 5 * z <= 2850) && (4 * y + 5 * z <= 1380) ? 1 : -100)));

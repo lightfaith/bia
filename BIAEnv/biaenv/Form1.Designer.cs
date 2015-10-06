@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.cv01btnBenchmark = new System.Windows.Forms.Button();
@@ -52,6 +52,14 @@
             this.il = new ILNumerics.Drawing.ILPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.cv03txtMin = new System.Windows.Forms.TextBox();
+            this.cv03txtMax = new System.Windows.Forms.TextBox();
+            this.cv03btnDraw = new System.Windows.Forms.Button();
+            this.cv03lblMin = new System.Windows.Forms.Label();
+            this.cv03lblMax = new System.Windows.Forms.Label();
+            this.cv03txtFreq = new System.Windows.Forms.TextBox();
+            this.cv03lblFreq = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cv01numPoints)).BeginInit();
@@ -59,6 +67,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -67,6 +76,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl.Controls.Add(this.tabPage1);
             this.tabControl.Controls.Add(this.tabPage2);
+            this.tabControl.Controls.Add(this.tabPage3);
             this.tabControl.Location = new System.Drawing.Point(12, 12);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
@@ -322,8 +332,8 @@
             // 
             // chart
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chart.ChartAreas.Add(chartArea1);
+            chartArea3.Name = "ChartArea1";
+            this.chart.ChartAreas.Add(chartArea3);
             this.chart.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chart.Location = new System.Drawing.Point(0, 0);
             this.chart.Name = "chart";
@@ -331,6 +341,83 @@
             this.chart.Size = new System.Drawing.Size(439, 373);
             this.chart.TabIndex = 4;
             this.chart.Text = "chart1";
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.cv03lblFreq);
+            this.tabPage3.Controls.Add(this.cv03txtFreq);
+            this.tabPage3.Controls.Add(this.cv03lblMax);
+            this.tabPage3.Controls.Add(this.cv03lblMin);
+            this.tabPage3.Controls.Add(this.cv03btnDraw);
+            this.tabPage3.Controls.Add(this.cv03txtMax);
+            this.tabPage3.Controls.Add(this.cv03txtMin);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(431, 88);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "03 - VOF";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // cv03txtMin
+            // 
+            this.cv03txtMin.Location = new System.Drawing.Point(40, 7);
+            this.cv03txtMin.Name = "cv03txtMin";
+            this.cv03txtMin.Size = new System.Drawing.Size(100, 20);
+            this.cv03txtMin.TabIndex = 0;
+            this.cv03txtMin.Text = "0";
+            // 
+            // cv03txtMax
+            // 
+            this.cv03txtMax.Location = new System.Drawing.Point(40, 33);
+            this.cv03txtMax.Name = "cv03txtMax";
+            this.cv03txtMax.Size = new System.Drawing.Size(100, 20);
+            this.cv03txtMax.TabIndex = 1;
+            this.cv03txtMax.Text = "1";
+            // 
+            // cv03btnDraw
+            // 
+            this.cv03btnDraw.Location = new System.Drawing.Point(146, 5);
+            this.cv03btnDraw.Name = "cv03btnDraw";
+            this.cv03btnDraw.Size = new System.Drawing.Size(54, 74);
+            this.cv03btnDraw.TabIndex = 2;
+            this.cv03btnDraw.Text = "Draw";
+            this.cv03btnDraw.UseVisualStyleBackColor = true;
+            this.cv03btnDraw.Click += new System.EventHandler(this.cv03btnDraw_Click);
+            // 
+            // cv03lblMin
+            // 
+            this.cv03lblMin.AutoSize = true;
+            this.cv03lblMin.Location = new System.Drawing.Point(3, 10);
+            this.cv03lblMin.Name = "cv03lblMin";
+            this.cv03lblMin.Size = new System.Drawing.Size(27, 13);
+            this.cv03lblMin.TabIndex = 3;
+            this.cv03lblMin.Text = "Min:";
+            // 
+            // cv03lblMax
+            // 
+            this.cv03lblMax.AutoSize = true;
+            this.cv03lblMax.Location = new System.Drawing.Point(3, 36);
+            this.cv03lblMax.Name = "cv03lblMax";
+            this.cv03lblMax.Size = new System.Drawing.Size(30, 13);
+            this.cv03lblMax.TabIndex = 4;
+            this.cv03lblMax.Text = "Max:";
+            // 
+            // cv03txtFreq
+            // 
+            this.cv03txtFreq.Location = new System.Drawing.Point(40, 59);
+            this.cv03txtFreq.Name = "cv03txtFreq";
+            this.cv03txtFreq.Size = new System.Drawing.Size(100, 20);
+            this.cv03txtFreq.TabIndex = 5;
+            this.cv03txtFreq.Text = "1";
+            // 
+            // cv03lblFreq
+            // 
+            this.cv03lblFreq.AutoSize = true;
+            this.cv03lblFreq.Location = new System.Drawing.Point(3, 62);
+            this.cv03lblFreq.Name = "cv03lblFreq";
+            this.cv03lblFreq.Size = new System.Drawing.Size(31, 13);
+            this.cv03lblFreq.TabIndex = 6;
+            this.cv03lblFreq.Text = "Freq:";
             // 
             // Form1
             // 
@@ -352,6 +439,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).EndInit();
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chart)).EndInit();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -380,6 +469,14 @@
         private System.Windows.Forms.Label cv02lblMax;
         private System.Windows.Forms.Label cv02lblMin;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Label cv03lblMax;
+        private System.Windows.Forms.Label cv03lblMin;
+        private System.Windows.Forms.Button cv03btnDraw;
+        private System.Windows.Forms.TextBox cv03txtMax;
+        private System.Windows.Forms.TextBox cv03txtMin;
+        private System.Windows.Forms.Label cv03lblFreq;
+        private System.Windows.Forms.TextBox cv03txtFreq;
     }
 }
 

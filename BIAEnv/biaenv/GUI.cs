@@ -109,9 +109,9 @@ namespace biaenv
 
         #endregion
 
-        
-  
-        public static void Plot(this ILPanel panel, Task02.func f)
+
+
+        public static void Plot(this ILPanel panel, Lib.func f, float min, float max, float step)
         {
             ILScene scene = null;
             // define X and Y range
@@ -127,8 +127,8 @@ namespace biaenv
             scene = new ILScene() {
                 new ILPlotCube(twoDMode: false) {
                      new ILSurface(new Func<float,float,float>(f), 
-                         Task02.Min, Task02.Max, (int)((Task02.Max-Task02.Min)*Task02.Step+1),
-                         Task02.Min, Task02.Max, (int)((Task02.Max-Task02.Min)*Task02.Step+1),
+                         min, max, (int)((max-min)*step+1),
+                         min, max, (int)((max-min)*step+1),
                          colormap: Colormaps.Hsv) {
                         UseLighting = true, 
                         
@@ -141,7 +141,7 @@ namespace biaenv
             panel.Refresh();
         }
 
-        public static void Plot(this ILPanel panel, Task02.func4D input)
+        public static void Plot(this ILPanel panel, Lib.func4D input)
         {
             ILScene scene = null;
             // define X and Y range
