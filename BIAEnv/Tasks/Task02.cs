@@ -8,15 +8,14 @@ namespace Tasks
 {
     public class Task02
     {
-        
-        private static float min=-10;
-        private static float max=10;
-        private static float step=1;
+
+        private static float min = -10;
+        private static float max = 10;
+        private static float step = 1;
         public static float Min { get { return min; } set { min = value; } }
         public static float Max { get { return max; } set { max = value; } }
         public static float Step { get { return step; } set { step = value; } }
-        private static float PI = (float)Math.PI;
-        private static float E = (float)Math.E;
+        
 
         #region SHEKEL constants
         private float[] Shekel_c = {0.806f, 0.517f, 0.1f, .908f, 0.965f, 0.669f, 0.524f, 0.902f, 0.531f, 0.876f, 0.462f, 0.491f, 0.463f, 0.714f, 0.352f, 0.869f, 0.813f, 0.811f,
@@ -54,7 +53,7 @@ namespace Tasks
             {4.138f, 2.562f, 2.532f, 9.661f, 5.611f, 5.500f, 6.886f, 2.341f, 9.699f, 6.500f}};
         #endregion
 
-        public static void SetMeasures(float min, float max, float step) 
+        public static void SetMeasures(float min, float max, float step)
         {
             Task02.Min = min;
             Task02.Max = max;
@@ -72,108 +71,149 @@ namespace Tasks
             return result;
         }
         */
-        public static Lib.func FirstDeJong()
+        public static float FirstDeJong(float[] dims)
         {
-            return ((x, y) => ((float)(Math.Pow(x, 2) + Math.Pow(y, 2))));
+            double result = 0;
+            for (int i = 0; i < dims.Length; i++)
+                result += Math.Pow(dims[i], 2);
+
+            return (float)result;
         }
 
-        public static Lib.func RosenbrockSaddle() 
+        public static float RosenbrockSaddle(float[] dims)
         {
-            // for 3D only!
-            return ((x,y)=>(float)(100*Math.Pow(x*x-y,2)+Math.Pow(1-x, 2)));
+            double result = 0;
+            for (int i = 0; i < dims.Length - 1; i++)
+                result += 100 * Math.Pow(dims[i] * dims[i] - dims[i + 1], 2) + Math.Pow(1 - dims[i], 2);
+            return (float)result;
         }
 
-        public static Lib.func ThirdDeJong()
+        public static float ThirdDeJong(float[] dims)
         {
-            return ((x, y) => (Math.Abs(x) + Math.Abs(y)));
+            double result = 0;
+            for (int i = 0; i < dims.Length; i++)
+                result += Math.Abs(dims[i]);
+            return (float)result;
         }
 
-        public static Lib.func FourthDeJong()
+        public static float FourthDeJong(float[] dims)
         {
-            return ((x, y) => ((float)(Math.Pow(x, 4) + Math.Pow(y, 4))));
+            double result = 0; 
+            for (int i = 0; i < dims.Length; i++)
+                result += Math.Pow(dims[i], 4);
+            return (float)result;
         }
 
-        public static Lib.func Rastrigin()
+        public static float Rastrigin(float[] dims)
         {
+            double result = 0;
+            for (int i = 0; i < dims.Length; i++)
+                result += dims[i] * dims[i] - 10 * Math.Cos(2 * Math.PI*dims[i]);
+            result *= 2 * dims.Length;
+            return (float)result;
+        }
+
+        public static float Schwefel(float[] dims)
+        {
+            double result = 0;
+            for (int i = 0; i < dims.Length; i++)
+                result += -dims[i] * Math.Sin(Math.Sqrt(Math.Abs(dims[i])));
+            return (float)result;
+        }
+
+        public static float Griewangk(float[] dims)
+        {
+            double result = 0;
+            double sum = 0;
+            double prod = 1;
+            for (int i = 0; i < dims.Length; i++)
+            {
+                sum += dims[i] * dims[i] / 4000;
+                prod *= Math.Cos(dims[i] / Math.Sqrt(i));
+            }
+            result = 1 + sum - prod;
+            return (float)result;
+        }
+
+        public static float SineEnvelopeSineWave(float[] dims)
+        {
+            double result = 0; 
+            for (int i = 0; i < dims.Length - 1; i++)
+                result -= 0.5+Math.Pow(Math.Sin(dims[i]*dims[i]+dims[i+1]*dims[i+1]-0.5),2)/Math.Pow(1+0.001*(dims[i]*dims[i]+dims[i+1]*dims[i+1]),2);
+            return (float)result;
+        }
+
+        public static float StretchedVSineWave(float[] dims)
+        {
+            double result = 0; 
+            for (int i = 0; i < dims.Length - 1; i++)
+                result += Math.Pow((dims[i] * dims[i] + dims[i + 1] * dims[i + 1]), 0.25) * Math.Sin(Math.Pow(50 * Math.Pow(dims[i] * dims[i] + dims[i + 1] * dims[i + 1], 0.1), 2) + 1);
+            return (float)result;
+        }
+
+
+        public static float AckleyI(float[] dims)
+        {
+            double result = 0;
+            for (int i = 0; i < dims.Length - 1; i++)
+                result += 1 / Math.Pow(Math.E, 5) * Math.Sqrt(dims[i] * dims[i] + dims[i + 1] * dims[i + 1]) + 3 * (Math.Cos(2 * dims[i]) + Math.Sin(2 * dims[i + 1]));
+            return (float)result;
+        }
+
+        public static float AckleyII(float[] dims)
+        {
+            double result = 0;
+            for (int i = 0; i < dims.Length - 1; i++)
+                result += 20 + Math.E - (20 / Math.Pow(Math.E, 0.2 * Math.Sqrt((dims[i] * dims[i] + dims[i + 1] * dims[i + 1]) / 2))) - Math.Pow(Math.E, 0.5 * Math.Cos(2 * Math.PI * dims[i]) + Math.Cos(2 * Math.PI * dims[i + 1]));
+            return (float)result;
+        }
+
+        public static float EggHolder(float[] dims)
+        {
+            double result = 0;
+            for (int i = 0; i < dims.Length - 1; i++)
+                result += -dims[i] * Math.Sin(Math.Sqrt(Math.Abs(dims[i] - dims[i + 1] - 47))) - (dims[i] + 47) * Math.Sin(Math.Sqrt(Math.Abs(dims[i + 1] + 47 + dims[i] / 2)));
+            return (float)result;
+        }
+
+        public static float Rana(float[] dims)
+        {
+            double result = 0;
+            for (int i = 0; i < dims.Length - 1; i++)
+                result += dims[i] * Math.Sin(Math.Sqrt(Math.Abs(dims[i + 1] + 1 - dims[i]))) * Math.Cos(Math.Sqrt(Math.Abs(dims[i + 1] + 1 + dims[i]))) + (dims[i + 1] + 1) * Math.Cos(Math.Sqrt(Math.Abs(dims[i + 1] + 1 - dims[i]))) * Math.Sin(Math.Sqrt(Math.Abs(dims[i + 1] + 1 + dims[i])));
+            return (float)result;
+        }
+
+        public static float Pathological(float[] dims)
+        {
+            double result = 0; 
+            for (int i = 0; i < dims.Length - 1; i++)
+                result += 0.5 + (Math.Pow(Math.Sin(Math.Sqrt(100 * dims[i] * dims[i] - dims[i + 1] * dims[i + 1])), 2) - 0.5) / (1 + 0.001 * Math.Pow(dims[i] * dims[i] - 2 * dims[i] * dims[i + 1] + dims[i + 1] * dims[i + 1], 2));
+            return (float)result;
+        }
+
+        public static float Michalewicz(float[] dims)
+        {
+            double result = 0;
+            for (int i = 0; i < dims.Length - 1; i++)
+                result += -(Math.Sin(dims[i]) * Math.Pow(Math.Sin(dims[i] * dims[i] / Math.PI), 20) + Math.Sin(dims[i + 1]) * Math.Pow(Math.Sin(2 * dims[i] * dims[i] / Math.PI), 20));
+            return (float)result;
+        }
+
+        public static float MastersCosineWave(float[] dims)
+        {
+            double result = 0;
+            for (int i = 0; i < dims.Length - 1; i++)
+                result += Math.Pow(Math.E, -(dims[i] * dims[i] + dims[i + 1] * dims[i + 1] + 0.5 * dims[i] * dims[i + 1]) / 8) * Math.Cos(4 * Math.Sqrt(dims[i] * dims[i] + dims[i + 1] * dims[i + 1] + 0.5 * dims[i] * dims[i + 1]));
+            return (float)result;
+        }
+
+        /*public static float4D TeaDivision(float x, float y)
+        { double result=0;
             //TODO BAD
-            return ((x, y) => (float)(4 * (x*x - 10 * Math.Cos(2 * PI * x) + y*y - 10 * Math.Cos(2 * PI * y))));
-        }
+            return ((x, y, z) => (float)(-(2 * x + 3 * y + 2 * z) * ((10 * x + 6 * y + 5 * z <= 2850) && (4 * y + 5 * z <= 1380) ? 1 : -100);
+        return (float)result; }
+        */
 
-        public static Lib.func Schwefel()
-        {
-            //TODO BAD
-            return ((x, y) => (float)(-x * Math.Sin(Math.Sqrt(Math.Abs(x))) + -y * Math.Sin(Math.Sqrt(Math.Abs(y)))));
-        }
-
-        public static Lib.func Griewangk()
-        {
-            return ((x, y) => (float)(1 + (x * x / 4000 + y * y / 4000) - (Math.Cos(x / 1) * Math.Cos(y / Math.Sqrt(2)))));
-        }
-
-        public static Lib.func SineEnvelopeSineWave()
-        {
-            //for 3D only!
-            //TODO BAD
-            return ((x, y) => (float)(-(0.5+(Math.Pow(Math.Sin(x*x+y*y-0.5),2))/(Math.Pow(1+0.001*(x*x+y*y),2)))));
-        }
-
-        public static Lib.func StretchedVSineWave() 
-        {
-            //for 3D only!
-            //TODO BAD
-            return ((x, y) => (float)(Math.Pow((x * x + y * y), 0.25) * Math.Sin(Math.Pow(50 * Math.Pow(x * x + y * y, 0.1),2) + 1)));
-        }
-
-
-        public static Lib.func AckleyI() 
-        {
-            //for 3D only!
-            //TODO PROBABLY BAD
-            return ((x,y)=>(float)(1/Math.Pow(E,5)*Math.Sqrt(x*x+y*y)+3*(Math.Cos(2*x)+Math.Sin(2*y))));
-        }
-
-        public static Lib.func AckleyII()
-        {
-            //for 3D only!
-            return ((x,y)=>(float)(20+E-(20/Math.Pow(E,0.2*Math.Sqrt((x*x+y*y)/2)))-Math.Pow(E, 0.5*Math.Cos(2*PI*x)+Math.Cos(2*PI*y))));
-        }
-
-        public static Lib.func EggHolder() 
-        {
-            return ((x,y)=>(float)(-x*Math.Sin(Math.Sqrt(Math.Abs(x-y-47)))-(x+47)*Math.Sin(Math.Sqrt(Math.Abs(y+47+x/2)))));
-        }
-
-        public static Lib.func Rana() 
-        {
-            //for 3D only!
-            return ((x,y)=>(float)(x*Math.Sin(Math.Sqrt(Math.Abs(y+1-x)))*Math.Cos(Math.Sqrt(Math.Abs(y+1+x)))+(y+1)*Math.Cos(Math.Sqrt(Math.Abs(y+1-x)))*Math.Sin(Math.Sqrt(Math.Abs(y+1+x)))));
-        }
-
-        public static Lib.func Pathological() 
-        {
-            //for 3D only!
-            return ((x,y)=>(float)(0.5+(Math.Pow(Math.Sin(Math.Sqrt(100*x*x-y*y)),2)-0.5)/(1+0.001*Math.Pow(x*x-2*x*y+y*y,2))));
-        }
-
-        public static Lib.func Michalewicz() 
-        {
-            //for 3D only!
-            //TODO CORRECT?
-            return ((x,y)=>(float)(-(Math.Sin(x)*Math.Pow(Math.Sin(x*x/PI), 20)+Math.Sin(y)*Math.Pow(Math.Sin(2*x*x/PI), 20))));
-        }
-
-        public static Lib.func MastersCosineWave() 
-        {
-        //for 3D only!
-            return ((x,y)=>(float)(Math.Pow(E, -(x*x+y*y+0.5*x*y)/8)*Math.Cos(4*Math.Sqrt(x*x+y*y+0.5*x*y))));
-        }
-
-        public static Lib.func4D TeaDivision()
-        {
-            //TODO BAD
-            return ((x, y, z) => (float)(-(2 * x + 3 * y + 2 * z) * ((10 * x + 6 * y + 5 * z <= 2850) && (4 * y + 5 * z <= 1380) ? 1 : -100)));
-        }
-
-        
     }
 }

@@ -8,8 +8,18 @@ namespace Tasks
 {
     public static class Lib
     {
-        public delegate float func(float x, float y);
-        public delegate float func4D(float x, float y, float z);
+        //public delegate float func(float x, float y);
+        public delegate float func(params float[] dims);
+        
+        //public delegate float func4D(float x, float y, float z);
+
+        public static float Encapsulation3D(this func f, float x, float y)
+        {
+            float[] arr = new float[2];
+            arr[0]=x;
+            arr[1]=y;
+            return f(arr);
+        }
 
         public static decimal Factorial(int n) 
         {

@@ -144,108 +144,109 @@ namespace biaenv
             {
                 case 0: //NOTHING
                     {
-                        il.Scene = null;
+                        il.Scene = new ILScene();
+                        il.Refresh();
                         break;
                     }
                 case 1: //FIRST DE JONG
                     {
-                        il.Plot(Task02.FirstDeJong(), Task02.Min, Task02.Max, Task02.Step);
+                        il.Plot(Task02.FirstDeJong, Task02.Min, Task02.Max, Task02.Step);
                         break;
                     }
                 case 2:
                     {
                         //TODO
-                        il.Plot(Task02.RosenbrockSaddle(), Task02.Min, Task02.Max, Task02.Step);
+                        il.Plot(Task02.RosenbrockSaddle, Task02.Min, Task02.Max, Task02.Step);
                         break;
                     }
                 case 3:
                     {
                         //3rd De Jong
-                        il.Plot(Task02.ThirdDeJong(), Task02.Min, Task02.Max, Task02.Step);
+                        il.Plot(Task02.ThirdDeJong, Task02.Min, Task02.Max, Task02.Step);
                         break;
                     }
                 case 4:
                     {
                         //4th De Jong
-                        il.Plot(Task02.FourthDeJong(), Task02.Min, Task02.Max, Task02.Step);
+                        il.Plot(Task02.FourthDeJong, Task02.Min, Task02.Max, Task02.Step);
                         break;
                     }
                 case 5:
                     {
                         //Rastrigin's Function
-                        il.Plot(Task02.Rastrigin(), Task02.Min, Task02.Max, Task02.Step);
+                        il.Plot(Task02.Rastrigin, Task02.Min, Task02.Max, Task02.Step);
                         break;
                     }
                 case 6:
                     {
                         //Schwefel's Function
-                        il.Plot(Task02.Schwefel(), Task02.Min, Task02.Max, Task02.Step);
+                        il.Plot(Task02.Schwefel, Task02.Min, Task02.Max, Task02.Step);
                         break;
                     }
                 case 7:
                     {
                         //Griewangk's Function
-                        il.Plot(Task02.Griewangk(), Task02.Min, Task02.Max, Task02.Step);
+                        il.Plot(Task02.Griewangk, Task02.Min, Task02.Max, Task02.Step);
                         break;
                     }
                 case 8:
                     {
                         //Sine Envelope Sine Wave Function
-                        il.Plot(Task02.SineEnvelopeSineWave(), Task02.Min, Task02.Max, Task02.Step);
+                        il.Plot(Task02.SineEnvelopeSineWave, Task02.Min, Task02.Max, Task02.Step);
                         break;
                     }
                 case 9:
                     {
                         //Stretched V Sine Wave Function
-                        il.Plot(Task02.StretchedVSineWave(), Task02.Min, Task02.Max, Task02.Step);
+                        il.Plot(Task02.StretchedVSineWave, Task02.Min, Task02.Max, Task02.Step);
                         break;
                     }
                 case 10:
                     {
                         //Ackley's Function I
-                        il.Plot(Task02.AckleyI(), Task02.Min, Task02.Max, Task02.Step);
+                        il.Plot(Task02.AckleyI, Task02.Min, Task02.Max, Task02.Step);
                         break;
                     }
                 case 11:
                     {
                         //Ackley's Function II
-                        il.Plot(Task02.AckleyII(), Task02.Min, Task02.Max, Task02.Step);
+                        il.Plot(Task02.AckleyII, Task02.Min, Task02.Max, Task02.Step);
                         break;
                     }
                 case 12:
                     {
                         //Egg Holder
-                        il.Plot(Task02.EggHolder(), Task02.Min, Task02.Max, Task02.Step);
+                        il.Plot(Task02.EggHolder, Task02.Min, Task02.Max, Task02.Step);
                         break;
                     }
                 case 13:
                     {
                         //Rana's Function
-                        il.Plot(Task02.Rana(), Task02.Min, Task02.Max, Task02.Step);
+                        il.Plot(Task02.Rana, Task02.Min, Task02.Max, Task02.Step);
                         break;
                     }
                 case 14:
                     {
                         //Pathological Function
-                        il.Plot(Task02.Pathological(), Task02.Min, Task02.Max, Task02.Step);
+                        il.Plot(Task02.Pathological, Task02.Min, Task02.Max, Task02.Step);
                         break;
                     }
                 case 15:
                     {
                         //Michalewicz's Function
-                        il.Plot(Task02.Michalewicz(), Task02.Min, Task02.Max, Task02.Step);
+                        il.Plot(Task02.Michalewicz, Task02.Min, Task02.Max, Task02.Step);
                         break;
                     }
                 case 16:
                     {
                         //Master's Cosine Wave Function
-                        il.Plot(Task02.MastersCosineWave(), Task02.Min, Task02.Max, Task02.Step);
+                        il.Plot(Task02.MastersCosineWave, Task02.Min, Task02.Max, Task02.Step);
                         break;
                     }
                 case 17:
                     {
                         //Tea Division
-                        il.Plot(Task02.TeaDivision());
+                        //il.Plot(Task02.TeaDivision);
                         break;
                     }
                 case 18:

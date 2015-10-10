@@ -32,12 +32,11 @@ namespace Tasks
         public static Lib.func VOF()
         {
             return h;
-            //TODO
         }
-        private static float h(float x1, float x2)
+        private static float h(float[]dims)
         {
-            float f = x1;
-            float g = 10 + x2;
+            float f = dims[0];
+            float g = 10 + dims[1];
 
             float alfa = (float)(0.25+3.75*(g-gxx)/(gx-gxx));
             return (float)(Math.Pow(f/g, alfa)-(f/g)*Math.Sin(Math.PI*Freq*f*g));
