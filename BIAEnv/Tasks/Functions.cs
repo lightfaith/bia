@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Tasks
 {
-    public class Task02
+    public class Functions
     {
 
         private static float min = -10;
         private static float max = 10;
-        private static float step = 1;
+        private static float precision = 1;
         public static float Min { get { return min; } set { min = value; } }
         public static float Max { get { return max; } set { max = value; } }
-        public static float Step { get { return step; } set { step = value; } }
-        
+        public static float Precision { get { return precision; } set { precision = value; } }
+
 
         #region SHEKEL constants
         private float[] Shekel_c = {0.806f, 0.517f, 0.1f, .908f, 0.965f, 0.669f, 0.524f, 0.902f, 0.531f, 0.876f, 0.462f, 0.491f, 0.463f, 0.714f, 0.352f, 0.869f, 0.813f, 0.811f,
@@ -55,15 +55,15 @@ namespace Tasks
 
         public static void SetMeasures(float min, float max, float step)
         {
-            Task02.Min = min;
-            Task02.Max = max;
-            Task02.Step = step;
+            Functions.Min = min;
+            Functions.Max = max;
+            Functions.Precision = step;
         }
 
         /*
         private static float[, ,] Compute(func4D f)
         {
-            float[, ,] result = new float[(int)((max - min) * (1/step) + 1),(int)( (max - min) * (1/step) + 1), (int)((max - min) * (1/step) + 1)];
+            float[, ,] result = new float[(int)((max - min) * (1/precision) + 1),(int)( (max - min) * (1/precision) + 1), (int)((max - min) * (1/precision) + 1)];
             for (int i = min; i <= max; i ++)
                 for (int j = min; j <= max; j++)
                     for (int k = min; k <= max; k ++)
@@ -98,7 +98,7 @@ namespace Tasks
 
         public static float FourthDeJong(float[] dims)
         {
-            double result = 0; 
+            double result = 0;
             for (int i = 0; i < dims.Length; i++)
                 result += Math.Pow(dims[i], 4);
             return (float)result;
@@ -108,7 +108,7 @@ namespace Tasks
         {
             double result = 0;
             for (int i = 0; i < dims.Length; i++)
-                result += dims[i] * dims[i] - 10 * Math.Cos(2 * Math.PI*dims[i]);
+                result += dims[i] * dims[i] - 10 * Math.Cos(2 * Math.PI * dims[i]);
             result *= 2 * dims.Length;
             return (float)result;
         }
@@ -119,6 +119,7 @@ namespace Tasks
             for (int i = 0; i < dims.Length; i++)
                 result += -dims[i] * Math.Sin(Math.Sqrt(Math.Abs(dims[i])));
             return (float)result;
+
         }
 
         public static float Griewangk(float[] dims)
@@ -129,23 +130,23 @@ namespace Tasks
             for (int i = 0; i < dims.Length; i++)
             {
                 sum += dims[i] * dims[i] / 4000;
-                prod *= Math.Cos(dims[i] / Math.Sqrt(i));
+                prod *= Math.Cos(dims[i] / Math.Sqrt(i+1));
             }
-            result = 1 + sum - prod;
+            result = 1 + sum -prod;
             return (float)result;
         }
 
         public static float SineEnvelopeSineWave(float[] dims)
         {
-            double result = 0; 
+            double result = 0;
             for (int i = 0; i < dims.Length - 1; i++)
-                result -= 0.5+Math.Pow(Math.Sin(dims[i]*dims[i]+dims[i+1]*dims[i+1]-0.5),2)/Math.Pow(1+0.001*(dims[i]*dims[i]+dims[i+1]*dims[i+1]),2);
+                result -= 0.5 + Math.Pow(Math.Sin(dims[i] * dims[i] + dims[i + 1] * dims[i + 1] - 0.5), 2) / Math.Pow(1 + 0.001 * (dims[i] * dims[i] + dims[i + 1] * dims[i + 1]), 2);
             return (float)result;
         }
 
         public static float StretchedVSineWave(float[] dims)
         {
-            double result = 0; 
+            double result = 0;
             for (int i = 0; i < dims.Length - 1; i++)
                 result += Math.Pow((dims[i] * dims[i] + dims[i + 1] * dims[i + 1]), 0.25) * Math.Sin(Math.Pow(50 * Math.Pow(dims[i] * dims[i] + dims[i + 1] * dims[i + 1], 0.1), 2) + 1);
             return (float)result;
@@ -186,7 +187,7 @@ namespace Tasks
 
         public static float Pathological(float[] dims)
         {
-            double result = 0; 
+            double result = 0;
             for (int i = 0; i < dims.Length - 1; i++)
                 result += 0.5 + (Math.Pow(Math.Sin(Math.Sqrt(100 * dims[i] * dims[i] - dims[i + 1] * dims[i + 1])), 2) - 0.5) / (1 + 0.001 * Math.Pow(dims[i] * dims[i] - 2 * dims[i] * dims[i + 1] + dims[i + 1] * dims[i + 1], 2));
             return (float)result;
@@ -215,5 +216,43 @@ namespace Tasks
         return (float)result; }
         */
 
+        public static float Pareto(float[] dims)
+        {
+            float f = dims[0];
+            float g = 10 + dims[1];
+
+            float freq = 1;
+            int gx = 11;
+            int gxx = 12;
+
+            float alfa = (float)(0.25 + 3.75 * (g - gxx) / (gx - gxx));
+            return (float)(Math.Pow(f / g, alfa) - (f / g) * Math.Sin(Math.PI * freq * f * g));
+        }
+
+        public static Lib.func GetFunctionByIndex(int i) 
+        {
+            switch (i) 
+            {
+                case 1: return FirstDeJong;
+                case 2: return RosenbrockSaddle;
+                case 3: return ThirdDeJong;
+                case 4: return FourthDeJong;
+                case 5: return Rastrigin;
+                case 6: return Schwefel;
+                case 7: return Griewangk;
+                case 8: return SineEnvelopeSineWave;
+                case 9: return StretchedVSineWave;
+                case 10: return AckleyI;
+                case 11: return AckleyII;
+                case 12: return EggHolder;
+                case 13: return Rana;
+                case 14: return Pathological;
+                case 15: return Michalewicz;
+                case 16: return MastersCosineWave;
+                case 21: return Pareto;
+                default: return null;
+            }
+        }
     }
 }
+

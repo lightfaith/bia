@@ -9,7 +9,7 @@ namespace Tasks
     public static class Lib
     {
         //public delegate float func(float x, float y);
-        public delegate float func(params float[] dims);
+        public delegate float func(float[] dims);
         
         //public delegate float func4D(float x, float y, float z);
 

@@ -9,6 +9,7 @@ using Tasks;
 using ILNumerics;
 using ILNumerics.Drawing;
 using ILNumerics.Drawing.Plotting;
+
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace biaenv
@@ -111,38 +112,55 @@ namespace biaenv
 
 
 
-        public static void Plot(this ILPanel panel, Lib.func f, float min, float max, float step)
+        public static void Plot(this ILPanel panel, Lib.func f, float min, float max, float step, bool refresh=true)
         {
             ILScene scene = null;
-            // define X and Y range
-            //ILArray<float> X = ILMath.vec<float>(Task02.Min, Task02.Step, Task02.Max);
-            //ILArray<float> Y = ILMath.vec<float>(Task02.Min, Task02.Step, Task02.Max);
 
-            // compute X and Y coordinates for every grid point
-            //ILArray<float> YMat = 1; // provide YMat as output to meshgrid
-            //ILArray<float> XMat = ILMath.meshgrid(X, Y, YMat); // only need mesh for 2D function here
-
-            
             // setup the scene + plot cube + surface 
-            scene = new ILScene() {
-                new ILPlotCube(twoDMode: false) {
+            scene = new ILScene() 
+            {
+                new ILPlotCube(twoDMode: false) 
+                {
                     
                      new ILSurface(new Func<float,float,float>(f.Encapsulation3D),
                          min, max, (int)((max-min)*step+1),
                          min, max, (int)((max-min)*step+1),
-                         colormap: Colormaps.Hsv) {
+                         colormap: Colormaps.Hsv) 
+                     {
                         UseLighting = true, 
-                        
-                 }
+                     },
                 }
             };
+
+
+            scene.First<ILPlotCube>().Rotation = Matrix4.Rotation(new Vector3(2, 0.55, 0.64), Math.PI / 2);
+
+            panel.Scene = scene;
+            if(refresh)
+                panel.Refresh();
+        }
+
+
+        public static void DrawPoints(this ILPanel panel,List<Element> population, float min, float max, float step)
+        {
+            ILScene scene = null;
+
+            // setup the scene + plot cube + surface 
+
+            ILArray<float> ilar = population.Array3D();
+
+            ILPoints ilpoints = new ILPoints { Positions = ilar, Color = Color.Black };
+
+            scene = panel.Scene;
+            scene.First<ILPlotCube>().Add(ilpoints);
+            
             scene.First<ILPlotCube>().Rotation = Matrix4.Rotation(new Vector3(2, 0.55, 0.64), Math.PI / 2);
 
             panel.Scene = scene;
             panel.Refresh();
         }
 
-        
+
         public static void Plot(this Chart chart, Dictionary<int, float> input)
         {
             chart.ChartAreas.Clear();
@@ -177,6 +195,6 @@ namespace biaenv
         }
     }
 
-          
-  
+
+
 }

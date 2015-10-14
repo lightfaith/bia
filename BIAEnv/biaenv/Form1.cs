@@ -19,6 +19,7 @@ namespace biaenv
     public partial class Form1 : Form
     {
         Task01 task01;
+        List<Element> population;
 
         public Form1()
         {
@@ -36,6 +37,7 @@ namespace biaenv
         private void Form1_Load(object sender, EventArgs e)
         {
             canvas.Init();
+            cv02cmbFunction.SelectedIndex = 1;
         }
 
         private void cv01btnCount_Click(object sender, EventArgs e)
@@ -80,7 +82,7 @@ namespace biaenv
                 s.Start();
 
                 bool debugmode = false;
-                if(task01.Points.Count<8 && debugmode)
+                if (task01.Points.Count < 8 && debugmode)
                     task01.Benchmark(sb); //debug mode
                 else
                     task01.Benchmark(null); //no debug mode
@@ -89,18 +91,18 @@ namespace biaenv
                 double ms = s.Elapsed.TotalMilliseconds;
                 cv01txtBenchmark.Text += sb.ToString();
                 cv01txtBenchmark.Text += String.Format("Benchmark for {0} points finished in {1} ms.\r\n", i, ms);
-                cv01txtBenchmark.ScrollToCaret(); 
+                cv01txtBenchmark.ScrollToCaret();
                 cv01txtBenchmark.Refresh();
-                times[i] = (float)Math.Round(ms/1000, 3);
+                times[i] = (float)Math.Round(ms / 1000, 3);
                 chart.Plot(times);
                 chart.Refresh();
             }
             //estimate the rest
-            for (int i = LASTTOMEASURE+1; i <= 15; i++)
+            for (int i = LASTTOMEASURE + 1; i <= 15; i++)
             {
                 times[i] = times[(i - 1)] * i;
                 chart.Plot(times);
-                cv01txtBenchmark.Text += String.Format("Approximated results for {0} points: {1} ms.\r\n", i, times[i]*1000);
+                cv01txtBenchmark.Text += String.Format("Approximated results for {0} points: {1} ms.\r\n", i, times[i] * 1000);
                 chart.Refresh();
             }
             chart.Plot(times);
@@ -129,152 +131,90 @@ namespace biaenv
 
         private void Draw(object sender, EventArgs e)
         {
-            
+
         }
 
+        //cv02btnDraw
         private void button1_Click(object sender, EventArgs e)
         {
             //MessageBox.Show(il.Scene.First<ILPlotCube>().Rotation.ToString());
             //il.Scene.First<ILPlotCube>().Rotation = Matrix4.Rotation(new Vector3(Convert.ToDouble(cv02txtMin.Text), Convert.ToDouble(cv02txtMax.Text), Convert.ToDouble(cv02txtStep.Text)), Math.PI / 2);
-            Task02.SetMeasures((float)Double.Parse(cv02txtMin.Text), (float)Double.Parse(cv02txtMax.Text), (float)Double.Parse(cv02txtStep.Text));
+            Functions.SetMeasures((float)Double.Parse(cv02txtMin.Text), (float)Double.Parse(cv02txtMax.Text), (float)Double.Parse(cv02txtStep.Text));
 
-
-            //MessageBox.Show(cv02cmbFunction.SelectedIndex.ToString());
-            switch (cv02cmbFunction.SelectedIndex)
+            int index = cv02cmbFunction.SelectedIndex;
+            if (index > 0 && index <= 16 || index==21)
+                il.Plot(Functions.GetFunctionByIndex(index), Functions.Min, Functions.Max, Functions.Precision);
+            else
             {
-                case 0: //NOTHING
-                    {
-                        il.Scene = new ILScene();
-                        il.Refresh();
-                        break;
-                    }
-                case 1: //FIRST DE JONG
-                    {
-                        il.Plot(Task02.FirstDeJong, Task02.Min, Task02.Max, Task02.Step);
-                        break;
-                    }
-                case 2:
-                    {
-                        //TODO
-                        il.Plot(Task02.RosenbrockSaddle, Task02.Min, Task02.Max, Task02.Step);
-                        break;
-                    }
-                case 3:
-                    {
-                        //3rd De Jong
-                        il.Plot(Task02.ThirdDeJong, Task02.Min, Task02.Max, Task02.Step);
-                        break;
-                    }
-                case 4:
-                    {
-                        //4th De Jong
-                        il.Plot(Task02.FourthDeJong, Task02.Min, Task02.Max, Task02.Step);
-                        break;
-                    }
-                case 5:
-                    {
-                        //Rastrigin's Function
-                        il.Plot(Task02.Rastrigin, Task02.Min, Task02.Max, Task02.Step);
-                        break;
-                    }
-                case 6:
-                    {
-                        //Schwefel's Function
-                        il.Plot(Task02.Schwefel, Task02.Min, Task02.Max, Task02.Step);
-                        break;
-                    }
-                case 7:
-                    {
-                        //Griewangk's Function
-                        il.Plot(Task02.Griewangk, Task02.Min, Task02.Max, Task02.Step);
-                        break;
-                    }
-                case 8:
-                    {
-                        //Sine Envelope Sine Wave Function
-                        il.Plot(Task02.SineEnvelopeSineWave, Task02.Min, Task02.Max, Task02.Step);
-                        break;
-                    }
-                case 9:
-                    {
-                        //Stretched V Sine Wave Function
-                        il.Plot(Task02.StretchedVSineWave, Task02.Min, Task02.Max, Task02.Step);
-                        break;
-                    }
-                case 10:
-                    {
-                        //Ackley's Function I
-                        il.Plot(Task02.AckleyI, Task02.Min, Task02.Max, Task02.Step);
-                        break;
-                    }
-                case 11:
-                    {
-                        //Ackley's Function II
-                        il.Plot(Task02.AckleyII, Task02.Min, Task02.Max, Task02.Step);
-                        break;
-                    }
-                case 12:
-                    {
-                        //Egg Holder
-                        il.Plot(Task02.EggHolder, Task02.Min, Task02.Max, Task02.Step);
-                        break;
-                    }
-                case 13:
-                    {
-                        //Rana's Function
-                        il.Plot(Task02.Rana, Task02.Min, Task02.Max, Task02.Step);
-                        break;
-                    }
-                case 14:
-                    {
-                        //Pathological Function
-                        il.Plot(Task02.Pathological, Task02.Min, Task02.Max, Task02.Step);
-                        break;
-                    }
-                case 15:
-                    {
-                        //Michalewicz's Function
-                        il.Plot(Task02.Michalewicz, Task02.Min, Task02.Max, Task02.Step);
-                        break;
-                    }
-                case 16:
-                    {
-                        //Master's Cosine Wave Function
-                        il.Plot(Task02.MastersCosineWave, Task02.Min, Task02.Max, Task02.Step);
-                        break;
-                    }
-                case 17:
-                    {
-                        //Tea Division
-                        //il.Plot(Task02.TeaDivision);
-                        break;
-                    }
-                case 18:
-                    {
-                        //Shekel's Foxhole
-                        //TODO
-                        break;
-                    }
-                case 19:
-                    {
-                        //Pseudo-Dirak's Function
-                        //TODO
-                        break;
-                    }
-                case 20:
-                    {
-                        //Fractal Function
-                        //TODO
-                        break;
-                    }
-            } //end of switch
-            //il.Refresh();
+                il.Scene = new ILScene();
+                il.Refresh();
+            }
+
         }
 
         private void cv03btnDraw_Click(object sender, EventArgs e)
         {
-            Task03.SetParameters((float)Convert.ToDouble(cv03txtMin.Text), (float)Convert.ToDouble(cv03txtMax.Text), Task03.Step, (float)Convert.ToDouble(cv03txtFreq.Text));
-            il.Plot(Task03.VOF(), Task03.Min, Task03.Max, Task03.Step);
+            //Task03.SetParameters((float)Convert.ToDouble(cv03txtMin.Text), (float)Convert.ToDouble(cv03txtMax.Text), Task03.Step, (float)Convert.ToDouble(cv03txtFreq.Text));
+            //il.Plot(Task03.VOF(), Task03.Min, Task03.Max, Task03.Step);
+        }
+
+        private void cv02btnPopulate_Click(object sender, EventArgs e)
+        {
+            Functions.SetMeasures((float)Double.Parse(cv02txtMin.Text), (float)Double.Parse(cv02txtMax.Text), (float)Double.Parse(cv02txtStep.Text));
+            Random r = new Random();
+            int populsize;
+            try { populsize = Int32.Parse(cv02txtPopulation.Text); }
+                catch (Exception) { populsize = 10; }
+            population = new List<Element>();
+            Lib.func f = Functions.GetFunctionByIndex(cv02cmbFunction.SelectedIndex);
+            if (f == null)
+                return;
+            for (int i = 0; i < populsize; i++)
+            {
+                float x;
+                float y;
+                if (cv02checkInteger.Checked) //integer?
+                {
+                    x = r.Next() % (Functions.Max - Functions.Min) + Functions.Min;
+                    y = r.Next() % (Functions.Max - Functions.Min) + Functions.Min;
+                }
+                else
+                {
+                    x = r.Next() % ((Functions.Max - Functions.Min) * 1000) / 1000 + Functions.Min;
+                    y = r.Next() % ((Functions.Max - Functions.Min) * 1000) / 1000 + Functions.Min;
+                }
+                population.Add(new Element(x, y, f(new float[] { x, y })));
+            }
+            cv02gridPopulation.DataSource = population;
+            foreach (DataGridViewColumn c in cv02gridPopulation.Columns)
+                c.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            cv02gridPopulation.Refresh();
+            il.Plot(f, Functions.Min, Functions.Max, Functions.Precision, false);
+            il.DrawPoints(population, Functions.Min, Functions.Max, Functions.Precision);
+        }
+
+        private void cv02btnStep_Click(object sender, EventArgs e)
+        {
+            Lib.func f = Functions.GetFunctionByIndex(cv02cmbFunction.SelectedIndex);
+            if (f == null)
+                return;
+            population.Evolve();
+            cv02gridPopulation.DataSource = population;
+            foreach (DataGridViewColumn c in cv02gridPopulation.Columns)
+                c.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            cv02gridPopulation.Refresh();
+            
+            il.Plot(f, Functions.Min, Functions.Max, Functions.Precision,false);
+            il.DrawPoints(population, Functions.Min, Functions.Max, Functions.Precision);
+        }
+
+        private void cv02btnPlay_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                cv02btnStep_Click(sender, e);
+                Thread.Sleep(1000);
+            }
         }
     }
 }

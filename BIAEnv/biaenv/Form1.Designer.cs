@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.cv01btnBenchmark = new System.Windows.Forms.Button();
@@ -40,6 +40,8 @@
             this.cv01btnCount = new System.Windows.Forms.Button();
             this.cv01numPoints = new System.Windows.Forms.NumericUpDown();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.cv02btnPopulate = new System.Windows.Forms.Button();
+            this.cv02gridPopulation = new System.Windows.Forms.DataGridView();
             this.cv02lblStep = new System.Windows.Forms.Label();
             this.cv02lblMax = new System.Windows.Forms.Label();
             this.cv02lblMin = new System.Windows.Forms.Label();
@@ -52,22 +54,18 @@
             this.il = new ILNumerics.Drawing.ILPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.cv03txtMin = new System.Windows.Forms.TextBox();
-            this.cv03txtMax = new System.Windows.Forms.TextBox();
-            this.cv03btnDraw = new System.Windows.Forms.Button();
-            this.cv03lblMin = new System.Windows.Forms.Label();
-            this.cv03lblMax = new System.Windows.Forms.Label();
-            this.cv03txtFreq = new System.Windows.Forms.TextBox();
-            this.cv03lblFreq = new System.Windows.Forms.Label();
+            this.cv02checkInteger = new System.Windows.Forms.CheckBox();
+            this.cv02btnStep = new System.Windows.Forms.Button();
+            this.cv02btnPlay = new System.Windows.Forms.Button();
+            this.cv02txtPopulation = new System.Windows.Forms.TextBox();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cv01numPoints)).BeginInit();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cv02gridPopulation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
-            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -76,11 +74,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl.Controls.Add(this.tabPage1);
             this.tabControl.Controls.Add(this.tabPage2);
-            this.tabControl.Controls.Add(this.tabPage3);
             this.tabControl.Location = new System.Drawing.Point(12, 12);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(439, 114);
+            this.tabControl.Size = new System.Drawing.Size(691, 114);
             this.tabControl.TabIndex = 0;
             this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
             // 
@@ -96,7 +93,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(431, 88);
+            this.tabPage1.Size = new System.Drawing.Size(683, 88);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "01 - Trajektorie";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -121,7 +118,7 @@
             this.cv01txtBenchmark.Name = "cv01txtBenchmark";
             this.cv01txtBenchmark.ReadOnly = true;
             this.cv01txtBenchmark.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.cv01txtBenchmark.Size = new System.Drawing.Size(248, 75);
+            this.cv01txtBenchmark.Size = new System.Drawing.Size(211, 75);
             this.cv01txtBenchmark.TabIndex = 7;
             // 
             // cv01txtTotal
@@ -184,6 +181,12 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.cv02txtPopulation);
+            this.tabPage2.Controls.Add(this.cv02btnPlay);
+            this.tabPage2.Controls.Add(this.cv02btnStep);
+            this.tabPage2.Controls.Add(this.cv02checkInteger);
+            this.tabPage2.Controls.Add(this.cv02btnPopulate);
+            this.tabPage2.Controls.Add(this.cv02gridPopulation);
             this.tabPage2.Controls.Add(this.cv02lblStep);
             this.tabPage2.Controls.Add(this.cv02lblMax);
             this.tabPage2.Controls.Add(this.cv02lblMin);
@@ -195,24 +198,45 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(431, 88);
+            this.tabPage2.Size = new System.Drawing.Size(683, 88);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "02 - Funkce";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // cv02btnPopulate
+            // 
+            this.cv02btnPopulate.Location = new System.Drawing.Point(309, 7);
+            this.cv02btnPopulate.Name = "cv02btnPopulate";
+            this.cv02btnPopulate.Size = new System.Drawing.Size(57, 20);
+            this.cv02btnPopulate.TabIndex = 9;
+            this.cv02btnPopulate.Text = "Populate";
+            this.cv02btnPopulate.UseVisualStyleBackColor = true;
+            this.cv02btnPopulate.Click += new System.EventHandler(this.cv02btnPopulate_Click);
+            // 
+            // cv02gridPopulation
+            // 
+            this.cv02gridPopulation.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cv02gridPopulation.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.cv02gridPopulation.Location = new System.Drawing.Point(457, 7);
+            this.cv02gridPopulation.Name = "cv02gridPopulation";
+            this.cv02gridPopulation.Size = new System.Drawing.Size(220, 76);
+            this.cv02gridPopulation.TabIndex = 8;
+            // 
             // cv02lblStep
             // 
             this.cv02lblStep.AutoSize = true;
-            this.cv02lblStep.Location = new System.Drawing.Point(342, 9);
+            this.cv02lblStep.Location = new System.Drawing.Point(103, 37);
             this.cv02lblStep.Name = "cv02lblStep";
-            this.cv02lblStep.Size = new System.Drawing.Size(32, 13);
+            this.cv02lblStep.Size = new System.Drawing.Size(53, 13);
             this.cv02lblStep.TabIndex = 7;
-            this.cv02lblStep.Text = "Step:";
+            this.cv02lblStep.Text = "Precision:";
             // 
             // cv02lblMax
             // 
             this.cv02lblMax.AutoSize = true;
-            this.cv02lblMax.Location = new System.Drawing.Point(271, 9);
+            this.cv02lblMax.Location = new System.Drawing.Point(6, 65);
             this.cv02lblMax.Name = "cv02lblMax";
             this.cv02lblMax.Size = new System.Drawing.Size(30, 13);
             this.cv02lblMax.TabIndex = 6;
@@ -221,7 +245,7 @@
             // cv02lblMin
             // 
             this.cv02lblMin.AutoSize = true;
-            this.cv02lblMin.Location = new System.Drawing.Point(202, 9);
+            this.cv02lblMin.Location = new System.Drawing.Point(6, 37);
             this.cv02lblMin.Name = "cv02lblMin";
             this.cv02lblMin.Size = new System.Drawing.Size(27, 13);
             this.cv02lblMin.TabIndex = 5;
@@ -229,7 +253,7 @@
             // 
             // cv02txtStep
             // 
-            this.cv02txtStep.Location = new System.Drawing.Point(380, 6);
+            this.cv02txtStep.Location = new System.Drawing.Point(162, 34);
             this.cv02txtStep.Name = "cv02txtStep";
             this.cv02txtStep.Size = new System.Drawing.Size(34, 20);
             this.cv02txtStep.TabIndex = 4;
@@ -237,7 +261,7 @@
             // 
             // cv02txtMax
             // 
-            this.cv02txtMax.Location = new System.Drawing.Point(302, 6);
+            this.cv02txtMax.Location = new System.Drawing.Point(39, 62);
             this.cv02txtMax.Name = "cv02txtMax";
             this.cv02txtMax.Size = new System.Drawing.Size(34, 20);
             this.cv02txtMax.TabIndex = 3;
@@ -245,7 +269,7 @@
             // 
             // cv02txtMin
             // 
-            this.cv02txtMin.Location = new System.Drawing.Point(231, 6);
+            this.cv02txtMin.Location = new System.Drawing.Point(39, 33);
             this.cv02txtMin.Name = "cv02txtMin";
             this.cv02txtMin.Size = new System.Drawing.Size(34, 20);
             this.cv02txtMin.TabIndex = 2;
@@ -253,9 +277,9 @@
             // 
             // cv02btnSettings
             // 
-            this.cv02btnSettings.Location = new System.Drawing.Point(205, 32);
+            this.cv02btnSettings.Location = new System.Drawing.Point(79, 62);
             this.cv02btnSettings.Name = "cv02btnSettings";
-            this.cv02btnSettings.Size = new System.Drawing.Size(209, 23);
+            this.cv02btnSettings.Size = new System.Drawing.Size(117, 20);
             this.cv02btnSettings.TabIndex = 1;
             this.cv02btnSettings.Text = "Draw";
             this.cv02btnSettings.UseVisualStyleBackColor = true;
@@ -286,7 +310,8 @@
             "Tea Division",
             "Shekel\'s Foxhole",
             "Pseudo-Dirak\'s Function",
-            "Fractal Function"});
+            "Fractal Function",
+            "Pareto"});
             this.cv02cmbFunction.Location = new System.Drawing.Point(6, 6);
             this.cv02cmbFunction.Name = "cv02cmbFunction";
             this.cv02cmbFunction.Size = new System.Drawing.Size(190, 21);
@@ -297,7 +322,7 @@
             this.canvas.Dock = System.Windows.Forms.DockStyle.Fill;
             this.canvas.Location = new System.Drawing.Point(0, 0);
             this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(439, 373);
+            this.canvas.Size = new System.Drawing.Size(691, 373);
             this.canvas.TabIndex = 2;
             this.canvas.TabStop = false;
             this.canvas.Visible = false;
@@ -313,7 +338,7 @@
             this.il.Name = "il";
             this.il.Rectangle = ((System.Drawing.RectangleF)(resources.GetObject("il.Rectangle")));
             this.il.ShowUIControls = false;
-            this.il.Size = new System.Drawing.Size(439, 373);
+            this.il.Size = new System.Drawing.Size(691, 373);
             this.il.TabIndex = 3;
             this.il.Visible = false;
             // 
@@ -327,103 +352,64 @@
             this.panel1.Controls.Add(this.il);
             this.panel1.Location = new System.Drawing.Point(12, 129);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(439, 373);
+            this.panel1.Size = new System.Drawing.Size(691, 373);
             this.panel1.TabIndex = 4;
             // 
             // chart
             // 
-            chartArea3.Name = "ChartArea1";
-            this.chart.ChartAreas.Add(chartArea3);
+            chartArea4.Name = "ChartArea1";
+            this.chart.ChartAreas.Add(chartArea4);
             this.chart.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chart.Location = new System.Drawing.Point(0, 0);
             this.chart.Name = "chart";
             this.chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Fire;
-            this.chart.Size = new System.Drawing.Size(439, 373);
+            this.chart.Size = new System.Drawing.Size(691, 373);
             this.chart.TabIndex = 4;
             this.chart.Text = "chart1";
             // 
-            // tabPage3
+            // cv02checkInteger
             // 
-            this.tabPage3.Controls.Add(this.cv03lblFreq);
-            this.tabPage3.Controls.Add(this.cv03txtFreq);
-            this.tabPage3.Controls.Add(this.cv03lblMax);
-            this.tabPage3.Controls.Add(this.cv03lblMin);
-            this.tabPage3.Controls.Add(this.cv03btnDraw);
-            this.tabPage3.Controls.Add(this.cv03txtMax);
-            this.tabPage3.Controls.Add(this.cv03txtMin);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(431, 88);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "03 - VOF";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.cv02checkInteger.AutoSize = true;
+            this.cv02checkInteger.Location = new System.Drawing.Point(244, 9);
+            this.cv02checkInteger.Name = "cv02checkInteger";
+            this.cv02checkInteger.Size = new System.Drawing.Size(59, 17);
+            this.cv02checkInteger.TabIndex = 10;
+            this.cv02checkInteger.Text = "Integer";
+            this.cv02checkInteger.UseVisualStyleBackColor = true;
             // 
-            // cv03txtMin
+            // cv02btnStep
             // 
-            this.cv03txtMin.Location = new System.Drawing.Point(40, 7);
-            this.cv03txtMin.Name = "cv03txtMin";
-            this.cv03txtMin.Size = new System.Drawing.Size(100, 20);
-            this.cv03txtMin.TabIndex = 0;
-            this.cv03txtMin.Text = "0";
+            this.cv02btnStep.Location = new System.Drawing.Point(370, 7);
+            this.cv02btnStep.Name = "cv02btnStep";
+            this.cv02btnStep.Size = new System.Drawing.Size(37, 20);
+            this.cv02btnStep.TabIndex = 12;
+            this.cv02btnStep.Text = "Step";
+            this.cv02btnStep.UseVisualStyleBackColor = true;
+            this.cv02btnStep.Click += new System.EventHandler(this.cv02btnStep_Click);
             // 
-            // cv03txtMax
+            // cv02btnPlay
             // 
-            this.cv03txtMax.Location = new System.Drawing.Point(40, 33);
-            this.cv03txtMax.Name = "cv03txtMax";
-            this.cv03txtMax.Size = new System.Drawing.Size(100, 20);
-            this.cv03txtMax.TabIndex = 1;
-            this.cv03txtMax.Text = "1";
+            this.cv02btnPlay.Location = new System.Drawing.Point(413, 7);
+            this.cv02btnPlay.Name = "cv02btnPlay";
+            this.cv02btnPlay.Size = new System.Drawing.Size(38, 20);
+            this.cv02btnPlay.TabIndex = 13;
+            this.cv02btnPlay.Text = "Play";
+            this.cv02btnPlay.UseVisualStyleBackColor = true;
+            this.cv02btnPlay.Click += new System.EventHandler(this.cv02btnPlay_Click);
             // 
-            // cv03btnDraw
+            // cv02txtPopulation
             // 
-            this.cv03btnDraw.Location = new System.Drawing.Point(146, 5);
-            this.cv03btnDraw.Name = "cv03btnDraw";
-            this.cv03btnDraw.Size = new System.Drawing.Size(54, 74);
-            this.cv03btnDraw.TabIndex = 2;
-            this.cv03btnDraw.Text = "Draw";
-            this.cv03btnDraw.UseVisualStyleBackColor = true;
-            this.cv03btnDraw.Click += new System.EventHandler(this.cv03btnDraw_Click);
-            // 
-            // cv03lblMin
-            // 
-            this.cv03lblMin.AutoSize = true;
-            this.cv03lblMin.Location = new System.Drawing.Point(3, 10);
-            this.cv03lblMin.Name = "cv03lblMin";
-            this.cv03lblMin.Size = new System.Drawing.Size(27, 13);
-            this.cv03lblMin.TabIndex = 3;
-            this.cv03lblMin.Text = "Min:";
-            // 
-            // cv03lblMax
-            // 
-            this.cv03lblMax.AutoSize = true;
-            this.cv03lblMax.Location = new System.Drawing.Point(3, 36);
-            this.cv03lblMax.Name = "cv03lblMax";
-            this.cv03lblMax.Size = new System.Drawing.Size(30, 13);
-            this.cv03lblMax.TabIndex = 4;
-            this.cv03lblMax.Text = "Max:";
-            // 
-            // cv03txtFreq
-            // 
-            this.cv03txtFreq.Location = new System.Drawing.Point(40, 59);
-            this.cv03txtFreq.Name = "cv03txtFreq";
-            this.cv03txtFreq.Size = new System.Drawing.Size(100, 20);
-            this.cv03txtFreq.TabIndex = 5;
-            this.cv03txtFreq.Text = "1";
-            // 
-            // cv03lblFreq
-            // 
-            this.cv03lblFreq.AutoSize = true;
-            this.cv03lblFreq.Location = new System.Drawing.Point(3, 62);
-            this.cv03lblFreq.Name = "cv03lblFreq";
-            this.cv03lblFreq.Size = new System.Drawing.Size(31, 13);
-            this.cv03lblFreq.TabIndex = 6;
-            this.cv03lblFreq.Text = "Freq:";
+            this.cv02txtPopulation.Location = new System.Drawing.Point(202, 7);
+            this.cv02txtPopulation.Name = "cv02txtPopulation";
+            this.cv02txtPopulation.Size = new System.Drawing.Size(36, 20);
+            this.cv02txtPopulation.TabIndex = 14;
+            this.cv02txtPopulation.Text = "10";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(463, 514);
+            this.ClientSize = new System.Drawing.Size(715, 514);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tabControl);
             this.Name = "Form1";
@@ -436,11 +422,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.cv01numPoints)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cv02gridPopulation)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).EndInit();
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chart)).EndInit();
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -469,14 +454,12 @@
         private System.Windows.Forms.Label cv02lblMax;
         private System.Windows.Forms.Label cv02lblMin;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart;
-        private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.Label cv03lblMax;
-        private System.Windows.Forms.Label cv03lblMin;
-        private System.Windows.Forms.Button cv03btnDraw;
-        private System.Windows.Forms.TextBox cv03txtMax;
-        private System.Windows.Forms.TextBox cv03txtMin;
-        private System.Windows.Forms.Label cv03lblFreq;
-        private System.Windows.Forms.TextBox cv03txtFreq;
+        private System.Windows.Forms.Button cv02btnPopulate;
+        private System.Windows.Forms.DataGridView cv02gridPopulation;
+        private System.Windows.Forms.TextBox cv02txtPopulation;
+        private System.Windows.Forms.Button cv02btnPlay;
+        private System.Windows.Forms.Button cv02btnStep;
+        private System.Windows.Forms.CheckBox cv02checkInteger;
     }
 }
 
