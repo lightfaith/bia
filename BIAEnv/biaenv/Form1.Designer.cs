@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.cv01btnBenchmark = new System.Windows.Forms.Button();
@@ -40,6 +40,11 @@
             this.cv01btnCount = new System.Windows.Forms.Button();
             this.cv01numPoints = new System.Windows.Forms.NumericUpDown();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.cv02txtIteration = new System.Windows.Forms.TextBox();
+            this.cv02cmbAlgo = new System.Windows.Forms.ComboBox();
+            this.cv02txtPopulation = new System.Windows.Forms.TextBox();
+            this.cv02btnStep = new System.Windows.Forms.Button();
+            this.cv02checkInteger = new System.Windows.Forms.CheckBox();
             this.cv02btnPopulate = new System.Windows.Forms.Button();
             this.cv02gridPopulation = new System.Windows.Forms.DataGridView();
             this.cv02lblStep = new System.Windows.Forms.Label();
@@ -54,10 +59,7 @@
             this.il = new ILNumerics.Drawing.ILPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.cv02checkInteger = new System.Windows.Forms.CheckBox();
-            this.cv02btnStep = new System.Windows.Forms.Button();
-            this.cv02btnPlay = new System.Windows.Forms.Button();
-            this.cv02txtPopulation = new System.Windows.Forms.TextBox();
+            this.cv02btnCamera = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cv01numPoints)).BeginInit();
@@ -77,7 +79,7 @@
             this.tabControl.Location = new System.Drawing.Point(12, 12);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(691, 114);
+            this.tabControl.Size = new System.Drawing.Size(723, 114);
             this.tabControl.TabIndex = 0;
             this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
             // 
@@ -93,7 +95,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(683, 88);
+            this.tabPage1.Size = new System.Drawing.Size(456, 88);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "01 - Trajektorie";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -181,12 +183,13 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.cv02btnCamera);
+            this.tabPage2.Controls.Add(this.cv02txtIteration);
+            this.tabPage2.Controls.Add(this.cv02cmbAlgo);
             this.tabPage2.Controls.Add(this.cv02txtPopulation);
-            this.tabPage2.Controls.Add(this.cv02btnPlay);
             this.tabPage2.Controls.Add(this.cv02btnStep);
             this.tabPage2.Controls.Add(this.cv02checkInteger);
             this.tabPage2.Controls.Add(this.cv02btnPopulate);
-            this.tabPage2.Controls.Add(this.cv02gridPopulation);
             this.tabPage2.Controls.Add(this.cv02lblStep);
             this.tabPage2.Controls.Add(this.cv02lblMax);
             this.tabPage2.Controls.Add(this.cv02lblMin);
@@ -198,16 +201,63 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(683, 88);
+            this.tabPage2.Size = new System.Drawing.Size(715, 88);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "02 - Funkce";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // cv02txtIteration
+            // 
+            this.cv02txtIteration.Location = new System.Drawing.Point(372, 6);
+            this.cv02txtIteration.Name = "cv02txtIteration";
+            this.cv02txtIteration.Size = new System.Drawing.Size(37, 20);
+            this.cv02txtIteration.TabIndex = 16;
+            this.cv02txtIteration.Text = "10";
+            this.cv02txtIteration.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // cv02cmbAlgo
+            // 
+            this.cv02cmbAlgo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cv02cmbAlgo.FormattingEnabled = true;
+            this.cv02cmbAlgo.Location = new System.Drawing.Point(202, 33);
+            this.cv02cmbAlgo.Name = "cv02cmbAlgo";
+            this.cv02cmbAlgo.Size = new System.Drawing.Size(250, 21);
+            this.cv02cmbAlgo.TabIndex = 15;
+            // 
+            // cv02txtPopulation
+            // 
+            this.cv02txtPopulation.Location = new System.Drawing.Point(267, 6);
+            this.cv02txtPopulation.Name = "cv02txtPopulation";
+            this.cv02txtPopulation.Size = new System.Drawing.Size(36, 20);
+            this.cv02txtPopulation.TabIndex = 14;
+            this.cv02txtPopulation.Text = "10";
+            this.cv02txtPopulation.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // cv02btnStep
+            // 
+            this.cv02btnStep.Location = new System.Drawing.Point(415, 5);
+            this.cv02btnStep.Name = "cv02btnStep";
+            this.cv02btnStep.Size = new System.Drawing.Size(37, 22);
+            this.cv02btnStep.TabIndex = 12;
+            this.cv02btnStep.Text = "Step";
+            this.cv02btnStep.UseVisualStyleBackColor = true;
+            this.cv02btnStep.Click += new System.EventHandler(this.cv02btnStep_Click);
+            // 
+            // cv02checkInteger
+            // 
+            this.cv02checkInteger.AutoSize = true;
+            this.cv02checkInteger.Location = new System.Drawing.Point(202, 8);
+            this.cv02checkInteger.Name = "cv02checkInteger";
+            this.cv02checkInteger.Size = new System.Drawing.Size(59, 17);
+            this.cv02checkInteger.TabIndex = 10;
+            this.cv02checkInteger.Text = "Integer";
+            this.cv02checkInteger.UseVisualStyleBackColor = true;
+            // 
             // cv02btnPopulate
             // 
-            this.cv02btnPopulate.Location = new System.Drawing.Point(309, 7);
+            this.cv02btnPopulate.Location = new System.Drawing.Point(309, 5);
             this.cv02btnPopulate.Name = "cv02btnPopulate";
-            this.cv02btnPopulate.Size = new System.Drawing.Size(57, 20);
+            this.cv02btnPopulate.Size = new System.Drawing.Size(57, 22);
             this.cv02btnPopulate.TabIndex = 9;
             this.cv02btnPopulate.Text = "Populate";
             this.cv02btnPopulate.UseVisualStyleBackColor = true;
@@ -215,13 +265,12 @@
             // 
             // cv02gridPopulation
             // 
-            this.cv02gridPopulation.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.cv02gridPopulation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cv02gridPopulation.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.cv02gridPopulation.Location = new System.Drawing.Point(457, 7);
+            this.cv02gridPopulation.Location = new System.Drawing.Point(446, 129);
             this.cv02gridPopulation.Name = "cv02gridPopulation";
-            this.cv02gridPopulation.Size = new System.Drawing.Size(220, 76);
+            this.cv02gridPopulation.Size = new System.Drawing.Size(289, 371);
             this.cv02gridPopulation.TabIndex = 8;
             // 
             // cv02lblStep
@@ -265,7 +314,7 @@
             this.cv02txtMax.Name = "cv02txtMax";
             this.cv02txtMax.Size = new System.Drawing.Size(34, 20);
             this.cv02txtMax.TabIndex = 3;
-            this.cv02txtMax.Text = "20";
+            this.cv02txtMax.Text = "5";
             // 
             // cv02txtMin
             // 
@@ -273,13 +322,13 @@
             this.cv02txtMin.Name = "cv02txtMin";
             this.cv02txtMin.Size = new System.Drawing.Size(34, 20);
             this.cv02txtMin.TabIndex = 2;
-            this.cv02txtMin.Text = "-20";
+            this.cv02txtMin.Text = "-5";
             // 
             // cv02btnSettings
             // 
             this.cv02btnSettings.Location = new System.Drawing.Point(79, 62);
             this.cv02btnSettings.Name = "cv02btnSettings";
-            this.cv02btnSettings.Size = new System.Drawing.Size(117, 20);
+            this.cv02btnSettings.Size = new System.Drawing.Size(59, 20);
             this.cv02btnSettings.TabIndex = 1;
             this.cv02btnSettings.Text = "Draw";
             this.cv02btnSettings.UseVisualStyleBackColor = true;
@@ -322,7 +371,7 @@
             this.canvas.Dock = System.Windows.Forms.DockStyle.Fill;
             this.canvas.Location = new System.Drawing.Point(0, 0);
             this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(691, 373);
+            this.canvas.Size = new System.Drawing.Size(427, 371);
             this.canvas.TabIndex = 2;
             this.canvas.TabStop = false;
             this.canvas.Visible = false;
@@ -338,7 +387,7 @@
             this.il.Name = "il";
             this.il.Rectangle = ((System.Drawing.RectangleF)(resources.GetObject("il.Rectangle")));
             this.il.ShowUIControls = false;
-            this.il.Size = new System.Drawing.Size(691, 373);
+            this.il.Size = new System.Drawing.Size(427, 371);
             this.il.TabIndex = 3;
             this.il.Visible = false;
             // 
@@ -352,66 +401,39 @@
             this.panel1.Controls.Add(this.il);
             this.panel1.Location = new System.Drawing.Point(12, 129);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(691, 373);
+            this.panel1.Size = new System.Drawing.Size(427, 371);
             this.panel1.TabIndex = 4;
             // 
             // chart
             // 
-            chartArea4.Name = "ChartArea1";
-            this.chart.ChartAreas.Add(chartArea4);
+            chartArea1.Name = "ChartArea1";
+            this.chart.ChartAreas.Add(chartArea1);
             this.chart.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chart.Location = new System.Drawing.Point(0, 0);
             this.chart.Name = "chart";
             this.chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Fire;
-            this.chart.Size = new System.Drawing.Size(691, 373);
+            this.chart.Size = new System.Drawing.Size(427, 371);
             this.chart.TabIndex = 4;
             this.chart.Text = "chart1";
             // 
-            // cv02checkInteger
+            // cv02btnCamera
             // 
-            this.cv02checkInteger.AutoSize = true;
-            this.cv02checkInteger.Location = new System.Drawing.Point(244, 9);
-            this.cv02checkInteger.Name = "cv02checkInteger";
-            this.cv02checkInteger.Size = new System.Drawing.Size(59, 17);
-            this.cv02checkInteger.TabIndex = 10;
-            this.cv02checkInteger.Text = "Integer";
-            this.cv02checkInteger.UseVisualStyleBackColor = true;
-            // 
-            // cv02btnStep
-            // 
-            this.cv02btnStep.Location = new System.Drawing.Point(370, 7);
-            this.cv02btnStep.Name = "cv02btnStep";
-            this.cv02btnStep.Size = new System.Drawing.Size(37, 20);
-            this.cv02btnStep.TabIndex = 12;
-            this.cv02btnStep.Text = "Step";
-            this.cv02btnStep.UseVisualStyleBackColor = true;
-            this.cv02btnStep.Click += new System.EventHandler(this.cv02btnStep_Click);
-            // 
-            // cv02btnPlay
-            // 
-            this.cv02btnPlay.Location = new System.Drawing.Point(413, 7);
-            this.cv02btnPlay.Name = "cv02btnPlay";
-            this.cv02btnPlay.Size = new System.Drawing.Size(38, 20);
-            this.cv02btnPlay.TabIndex = 13;
-            this.cv02btnPlay.Text = "Play";
-            this.cv02btnPlay.UseVisualStyleBackColor = true;
-            this.cv02btnPlay.Click += new System.EventHandler(this.cv02btnPlay_Click);
-            // 
-            // cv02txtPopulation
-            // 
-            this.cv02txtPopulation.Location = new System.Drawing.Point(202, 7);
-            this.cv02txtPopulation.Name = "cv02txtPopulation";
-            this.cv02txtPopulation.Size = new System.Drawing.Size(36, 20);
-            this.cv02txtPopulation.TabIndex = 14;
-            this.cv02txtPopulation.Text = "10";
+            this.cv02btnCamera.Location = new System.Drawing.Point(144, 62);
+            this.cv02btnCamera.Name = "cv02btnCamera";
+            this.cv02btnCamera.Size = new System.Drawing.Size(52, 20);
+            this.cv02btnCamera.TabIndex = 17;
+            this.cv02btnCamera.Text = "Camera";
+            this.cv02btnCamera.UseVisualStyleBackColor = true;
+            this.cv02btnCamera.Click += new System.EventHandler(this.cv02btnCamera_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(715, 514);
+            this.ClientSize = new System.Drawing.Size(747, 512);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tabControl);
+            this.Controls.Add(this.cv02gridPopulation);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "BIA";
@@ -457,9 +479,11 @@
         private System.Windows.Forms.Button cv02btnPopulate;
         private System.Windows.Forms.DataGridView cv02gridPopulation;
         private System.Windows.Forms.TextBox cv02txtPopulation;
-        private System.Windows.Forms.Button cv02btnPlay;
         private System.Windows.Forms.Button cv02btnStep;
         private System.Windows.Forms.CheckBox cv02checkInteger;
+        private System.Windows.Forms.TextBox cv02txtIteration;
+        private System.Windows.Forms.ComboBox cv02cmbAlgo;
+        private System.Windows.Forms.Button cv02btnCamera;
     }
 }
 

@@ -53,11 +53,14 @@ namespace Tasks
             {4.138f, 2.562f, 2.532f, 9.661f, 5.611f, 5.500f, 6.886f, 2.341f, 9.699f, 6.500f}};
         #endregion
 
-        public static void SetMeasures(float min, float max, float step)
+        public static void SetMeasures(String min, String max, String precision)
         {
-            Functions.Min = min;
-            Functions.Max = max;
-            Functions.Precision = step;
+            try { Functions.Min = (float)Double.Parse(min); }
+                catch (FormatException) { Functions.Min = -5; }
+            try { Functions.Max = (float)Double.Parse(max); }
+                catch (FormatException) { Functions.Max = -5; }
+            try { Functions.Precision = (float)Double.Parse(precision); }
+                catch (FormatException) { Functions.Precision = 1; }
         }
 
         /*

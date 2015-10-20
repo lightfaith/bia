@@ -11,7 +11,7 @@ namespace Tasks
         public float X { get; set; }
         public float Y { get; set; }
         public float Z { get; set; }
-        //public float Fitness {get; private set;}
+        public float Fitness {get; set;}
 
         
         public Element(float x, float y, float z)
@@ -65,11 +65,49 @@ namespace Tasks
             return result;
         }
 
-        public static void Evolve(this List<Element> elements/*, algo*/) 
+        public static void Evolve(this List<Element> elements, Algorithm algo, Lib.func f, bool integer) 
         {
-        //task06
+            List<Element> result = new List<Element>();
+            if (algo is Algorithm)
+            {
+                result = algo.Run(elements, f, integer);
+            }
+            elements.Clear();
+            elements.AddRange(result);
+        }
+
+        public static void ComputeFitness(this List<Element> elements) 
+        {
+            float total = 0;
             foreach (Element e in elements)
-                e.Z = e.Z + 1;
+                total += e.Z;
+            foreach (Element e in elements)
+                e.Fitness = 1-(e.Z / total);
+        }
+
+        public static void AddPopulation(this List<Element> population, int count, Lib.func f, bool integer)
+        {
+            Random r = new Random();
+            
+            if (f == null)
+                return;
+            for (int i = 0; i < count; i++)
+            {
+                float x;
+                float y;
+                if (integer)
+                {
+                    x = r.Next() % (Functions.Max - Functions.Min) + Functions.Min;
+                    y = r.Next() % (Functions.Max - Functions.Min) + Functions.Min;
+                }
+                else
+                {
+                    x = r.Next() % ((Functions.Max - Functions.Min) * 1000) / 1000 + Functions.Min;
+                    y = r.Next() % ((Functions.Max - Functions.Min) * 1000) / 1000 + Functions.Min;
+                }
+                population.Add(new Element(x, y, f(new float[] { x, y })));
+            }
+            population.ComputeFitness();
         }
     }
 

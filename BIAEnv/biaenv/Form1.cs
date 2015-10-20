@@ -20,10 +20,12 @@ namespace biaenv
     {
         Task01 task01;
         List<Element> population;
+        List<Algorithm> algos;
 
         public Form1()
         {
             InitializeComponent();
+            
         }
 
 
@@ -38,6 +40,11 @@ namespace biaenv
         {
             canvas.Init();
             cv02cmbFunction.SelectedIndex = 1;
+            
+            algos = new List<Algorithm>();
+            algos.Add(new Blind());
+
+            cv02cmbAlgo.DataSource = algos;
         }
 
         private void cv01btnCount_Click(object sender, EventArgs e)
@@ -139,7 +146,7 @@ namespace biaenv
         {
             //MessageBox.Show(il.Scene.First<ILPlotCube>().Rotation.ToString());
             //il.Scene.First<ILPlotCube>().Rotation = Matrix4.Rotation(new Vector3(Convert.ToDouble(cv02txtMin.Text), Convert.ToDouble(cv02txtMax.Text), Convert.ToDouble(cv02txtStep.Text)), Math.PI / 2);
-            Functions.SetMeasures((float)Double.Parse(cv02txtMin.Text), (float)Double.Parse(cv02txtMax.Text), (float)Double.Parse(cv02txtStep.Text));
+            Functions.SetMeasures(cv02txtMin.Text, cv02txtMax.Text, cv02txtStep.Text);
 
             int index = cv02cmbFunction.SelectedIndex;
             if (index > 0 && index <= 16 || index==21)
@@ -160,34 +167,20 @@ namespace biaenv
 
         private void cv02btnPopulate_Click(object sender, EventArgs e)
         {
-            Functions.SetMeasures((float)Double.Parse(cv02txtMin.Text), (float)Double.Parse(cv02txtMax.Text), (float)Double.Parse(cv02txtStep.Text));
-            Random r = new Random();
+            Functions.SetMeasures(cv02txtMin.Text, cv02txtMax.Text, cv02txtStep.Text);
+            
             int populsize;
             try { populsize = Int32.Parse(cv02txtPopulation.Text); }
                 catch (Exception) { populsize = 10; }
-            population = new List<Element>();
+            
             Lib.func f = Functions.GetFunctionByIndex(cv02cmbFunction.SelectedIndex);
-            if (f == null)
-                return;
-            for (int i = 0; i < populsize; i++)
-            {
-                float x;
-                float y;
-                if (cv02checkInteger.Checked) //integer?
-                {
-                    x = r.Next() % (Functions.Max - Functions.Min) + Functions.Min;
-                    y = r.Next() % (Functions.Max - Functions.Min) + Functions.Min;
-                }
-                else
-                {
-                    x = r.Next() % ((Functions.Max - Functions.Min) * 1000) / 1000 + Functions.Min;
-                    y = r.Next() % ((Functions.Max - Functions.Min) * 1000) / 1000 + Functions.Min;
-                }
-                population.Add(new Element(x, y, f(new float[] { x, y })));
-            }
+            population = new List<Element>();
+            population.AddPopulation(populsize, f, cv02checkInteger.Checked);
+            
             cv02gridPopulation.DataSource = population;
             foreach (DataGridViewColumn c in cv02gridPopulation.Columns)
                 c.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            cv02gridPopulation.EmphasizeFitness();
             cv02gridPopulation.Refresh();
             il.Plot(f, Functions.Min, Functions.Max, Functions.Precision, false);
             il.DrawPoints(population, Functions.Min, Functions.Max, Functions.Precision);
@@ -198,10 +191,16 @@ namespace biaenv
             Lib.func f = Functions.GetFunctionByIndex(cv02cmbFunction.SelectedIndex);
             if (f == null)
                 return;
-            population.Evolve();
+
+            int generations;
+            try{generations = Int32.Parse(cv02txtIteration.Text);}
+            catch(FormatException){generations=1;}
+            for (int i = 0; i < generations; i++)
+                population.Evolve((Algorithm)cv02cmbAlgo.SelectedItem, f, cv02checkInteger.Checked);
             cv02gridPopulation.DataSource = population;
             foreach (DataGridViewColumn c in cv02gridPopulation.Columns)
                 c.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            cv02gridPopulation.EmphasizeFitness();
             cv02gridPopulation.Refresh();
             
             il.Plot(f, Functions.Min, Functions.Max, Functions.Precision,false);
@@ -215,6 +214,11 @@ namespace biaenv
                 cv02btnStep_Click(sender, e);
                 Thread.Sleep(1000);
             }
+        }
+
+        private void cv02btnCamera_Click(object sender, EventArgs e)
+        {
+            il.ResetCamera();
         }
     }
 }

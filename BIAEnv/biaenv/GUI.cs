@@ -115,7 +115,13 @@ namespace biaenv
         public static void Plot(this ILPanel panel, Lib.func f, float min, float max, float step, bool refresh=true)
         {
             ILScene scene = null;
-
+            //bool resetcam=false;
+            //Matrix4 rotation = default(Matrix4);
+            //if (panel.Scene.First<ILPlotCube>() == null)
+            //    resetcam = true;
+            //else
+            //    rotation = panel.Scene.First<ILPlotCube>().Rotation;
+            
             // setup the scene + plot cube + surface 
             scene = new ILScene() 
             {
@@ -131,17 +137,15 @@ namespace biaenv
                      },
                 }
             };
-
-
-            scene.First<ILPlotCube>().Rotation = Matrix4.Rotation(new Vector3(2, 0.55, 0.64), Math.PI / 2);
-
             panel.Scene = scene;
-            if(refresh)
-                panel.Refresh();
+            //if (resetcam)
+                panel.ResetCamera(refresh);
+            //else
+            //    panel.ResetCamera(rotation, refresh);
         }
 
 
-        public static void DrawPoints(this ILPanel panel,List<Element> population, float min, float max, float step)
+        public static void DrawPoints(this ILPanel panel, List<Element> population, float min, float max, float step)
         {
             ILScene scene = null;
 
@@ -154,12 +158,42 @@ namespace biaenv
             scene = panel.Scene;
             scene.First<ILPlotCube>().Add(ilpoints);
             
-            scene.First<ILPlotCube>().Rotation = Matrix4.Rotation(new Vector3(2, 0.55, 0.64), Math.PI / 2);
+            //scene.First<ILPlotCube>().Rotation = Matrix4.Rotation(new Vector3(2, 0.55, 0.64), Math.PI / 2);
 
             panel.Scene = scene;
             panel.Refresh();
         }
 
+        public static void ResetCamera(this ILPanel panel, Matrix4 rotation, bool refresh = true)
+        {
+            if(panel.Scene.First<ILPlotCube>()!=null)
+                panel.Scene.First<ILPlotCube>().Rotation = rotation;
+            if(refresh)
+                panel.Refresh();
+        }
+
+        public static void ResetCamera(this ILPanel panel, bool refresh=true) 
+        {
+            ResetCamera(panel, Matrix4.Rotation(new Vector3(2, 0.55, 0.64), Math.PI / 2), refresh);
+        }
+
+        public static void EmphasizeFitness(this DataGridView g) 
+        {
+            float bestfitness=0;
+            int bestindex=0;
+
+            List<Element> source = (List<Element>)g.DataSource;
+            for (int i = 0; i < source.Count; i++)
+            {
+                if (source[i].Fitness > bestfitness)
+                {
+                    bestindex = i;
+                    bestfitness = source[i].Fitness;
+                }
+                g.Rows[i].Selected = false;
+            }
+            g.Rows[bestindex].Selected = true;
+        }
 
         public static void Plot(this Chart chart, Dictionary<int, float> input)
         {
