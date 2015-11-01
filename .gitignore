@@ -1,0 +1,9 @@
+# exclude packages folder
+BIAEnv/packages
+
+
+# exclude bin, obj
+BIAEnv/*/bin
+BIAEnv/*/obj
+BIAEnv/*/bin32
+BIAEnv/*/bin64
