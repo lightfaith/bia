@@ -25,7 +25,7 @@ namespace biaenv
         public Form1()
         {
             InitializeComponent();
-            
+
         }
 
 
@@ -40,9 +40,10 @@ namespace biaenv
         {
             canvas.Init();
             cv02cmbFunction.SelectedIndex = 1;
-            
+
             algos = new List<Algorithm>();
             algos.Add(new Blind());
+            algos.Add(new SimulatedAnnealing());
 
             cv02cmbAlgo.DataSource = algos;
         }
@@ -149,7 +150,7 @@ namespace biaenv
             Functions.SetMeasures(cv02txtMin.Text, cv02txtMax.Text, cv02txtStep.Text);
 
             int index = cv02cmbFunction.SelectedIndex;
-            if (index > 0 && index <= 16 || index==21)
+            if (index > 0 && index <= 16 || index == 21)
                 il.Plot(Functions.GetFunctionByIndex(index), Functions.Min, Functions.Max, Functions.Precision);
             else
             {
@@ -168,18 +169,19 @@ namespace biaenv
         private void cv02btnPopulate_Click(object sender, EventArgs e)
         {
             Functions.SetMeasures(cv02txtMin.Text, cv02txtMax.Text, cv02txtStep.Text);
-            
+
             int populsize;
             try { populsize = Int32.Parse(cv02txtPopulation.Text); }
-                catch (Exception) { populsize = 10; }
-            
+            catch (Exception) { populsize = 10; }
+
             Lib.func f = Functions.GetFunctionByIndex(cv02cmbFunction.SelectedIndex);
             population = new List<Element>();
             population.AddPopulation(populsize, f, cv02checkInteger.Checked);
-            
+            population.ComputeFitness();
+
             cv02gridPopulation.DataSource = population;
-            foreach (DataGridViewColumn c in cv02gridPopulation.Columns)
-                c.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //foreach (DataGridViewColumn c in cv02gridPopulation.Columns)
+            //    c.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             cv02gridPopulation.EmphasizeFitness();
             cv02gridPopulation.Refresh();
             il.Plot(f, Functions.Min, Functions.Max, Functions.Precision, false);
@@ -193,17 +195,19 @@ namespace biaenv
                 return;
 
             int generations;
-            try{generations = Int32.Parse(cv02txtIteration.Text);}
-            catch(FormatException){generations=1;}
+            try { generations = Int32.Parse(cv02txtIteration.Text); }
+            catch (FormatException) { generations = 1; }
+            Algorithm a = (Algorithm)cv02cmbAlgo.SelectedItem;
+            a.UpdateParameters(cv02txtParameters.Text);
             for (int i = 0; i < generations; i++)
-                population.Evolve((Algorithm)cv02cmbAlgo.SelectedItem, f, cv02checkInteger.Checked);
+                population.Evolve(a, f, cv02checkInteger.Checked);
+            population.ComputeFitness();
+
             cv02gridPopulation.DataSource = population;
-            foreach (DataGridViewColumn c in cv02gridPopulation.Columns)
-                c.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             cv02gridPopulation.EmphasizeFitness();
             cv02gridPopulation.Refresh();
-            
-            il.Plot(f, Functions.Min, Functions.Max, Functions.Precision,false);
+
+            il.Plot(f, Functions.Min, Functions.Max, Functions.Precision, false);
             il.DrawPoints(population, Functions.Min, Functions.Max, Functions.Precision);
         }
 
@@ -218,7 +222,12 @@ namespace biaenv
 
         private void cv02btnCamera_Click(object sender, EventArgs e)
         {
-            il.ResetCamera();
+            il.ResetCamera(Matrix4.Rotation(new Vector3(2, 0.55, 0.64), Math.PI / 2), true);
+        }
+
+        private void cv02cmbAlgo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            cv02txtParameters.Text = ((Algorithm)cv02cmbAlgo.SelectedItem).GetParameters();
         }
     }
 }

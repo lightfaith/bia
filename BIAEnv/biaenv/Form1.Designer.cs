@@ -40,13 +40,14 @@
             this.cv01btnCount = new System.Windows.Forms.Button();
             this.cv01numPoints = new System.Windows.Forms.NumericUpDown();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.cv02txtParameters = new System.Windows.Forms.TextBox();
+            this.cv02btnCamera = new System.Windows.Forms.Button();
             this.cv02txtIteration = new System.Windows.Forms.TextBox();
             this.cv02cmbAlgo = new System.Windows.Forms.ComboBox();
             this.cv02txtPopulation = new System.Windows.Forms.TextBox();
             this.cv02btnStep = new System.Windows.Forms.Button();
             this.cv02checkInteger = new System.Windows.Forms.CheckBox();
             this.cv02btnPopulate = new System.Windows.Forms.Button();
-            this.cv02gridPopulation = new System.Windows.Forms.DataGridView();
             this.cv02lblStep = new System.Windows.Forms.Label();
             this.cv02lblMax = new System.Windows.Forms.Label();
             this.cv02lblMin = new System.Windows.Forms.Label();
@@ -55,11 +56,11 @@
             this.cv02txtMin = new System.Windows.Forms.TextBox();
             this.cv02btnSettings = new System.Windows.Forms.Button();
             this.cv02cmbFunction = new System.Windows.Forms.ComboBox();
+            this.cv02gridPopulation = new System.Windows.Forms.DataGridView();
             this.canvas = new System.Windows.Forms.PictureBox();
             this.il = new ILNumerics.Drawing.ILPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.cv02btnCamera = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cv01numPoints)).BeginInit();
@@ -95,7 +96,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(456, 88);
+            this.tabPage1.Size = new System.Drawing.Size(715, 88);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "01 - Trajektorie";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -183,6 +184,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.cv02txtParameters);
             this.tabPage2.Controls.Add(this.cv02btnCamera);
             this.tabPage2.Controls.Add(this.cv02txtIteration);
             this.tabPage2.Controls.Add(this.cv02cmbAlgo);
@@ -206,13 +208,32 @@
             this.tabPage2.Text = "02 - Funkce";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // cv02txtParameters
+            // 
+            this.cv02txtParameters.Location = new System.Drawing.Point(458, 6);
+            this.cv02txtParameters.Multiline = true;
+            this.cv02txtParameters.Name = "cv02txtParameters";
+            this.cv02txtParameters.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.cv02txtParameters.Size = new System.Drawing.Size(115, 76);
+            this.cv02txtParameters.TabIndex = 18;
+            // 
+            // cv02btnCamera
+            // 
+            this.cv02btnCamera.Location = new System.Drawing.Point(144, 62);
+            this.cv02btnCamera.Name = "cv02btnCamera";
+            this.cv02btnCamera.Size = new System.Drawing.Size(52, 20);
+            this.cv02btnCamera.TabIndex = 17;
+            this.cv02btnCamera.Text = "Camera";
+            this.cv02btnCamera.UseVisualStyleBackColor = true;
+            this.cv02btnCamera.Click += new System.EventHandler(this.cv02btnCamera_Click);
+            // 
             // cv02txtIteration
             // 
             this.cv02txtIteration.Location = new System.Drawing.Point(372, 6);
             this.cv02txtIteration.Name = "cv02txtIteration";
             this.cv02txtIteration.Size = new System.Drawing.Size(37, 20);
             this.cv02txtIteration.TabIndex = 16;
-            this.cv02txtIteration.Text = "10";
+            this.cv02txtIteration.Text = "1";
             this.cv02txtIteration.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // cv02cmbAlgo
@@ -223,6 +244,7 @@
             this.cv02cmbAlgo.Name = "cv02cmbAlgo";
             this.cv02cmbAlgo.Size = new System.Drawing.Size(250, 21);
             this.cv02cmbAlgo.TabIndex = 15;
+            this.cv02cmbAlgo.SelectedIndexChanged += new System.EventHandler(this.cv02cmbAlgo_SelectedIndexChanged);
             // 
             // cv02txtPopulation
             // 
@@ -262,16 +284,6 @@
             this.cv02btnPopulate.Text = "Populate";
             this.cv02btnPopulate.UseVisualStyleBackColor = true;
             this.cv02btnPopulate.Click += new System.EventHandler(this.cv02btnPopulate_Click);
-            // 
-            // cv02gridPopulation
-            // 
-            this.cv02gridPopulation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cv02gridPopulation.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.cv02gridPopulation.Location = new System.Drawing.Point(446, 129);
-            this.cv02gridPopulation.Name = "cv02gridPopulation";
-            this.cv02gridPopulation.Size = new System.Drawing.Size(289, 371);
-            this.cv02gridPopulation.TabIndex = 8;
             // 
             // cv02lblStep
             // 
@@ -366,6 +378,21 @@
             this.cv02cmbFunction.Size = new System.Drawing.Size(190, 21);
             this.cv02cmbFunction.TabIndex = 0;
             // 
+            // cv02gridPopulation
+            // 
+            this.cv02gridPopulation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cv02gridPopulation.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.cv02gridPopulation.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.cv02gridPopulation.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.cv02gridPopulation.Location = new System.Drawing.Point(446, 129);
+            this.cv02gridPopulation.MultiSelect = false;
+            this.cv02gridPopulation.Name = "cv02gridPopulation";
+            this.cv02gridPopulation.ReadOnly = true;
+            this.cv02gridPopulation.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.cv02gridPopulation.Size = new System.Drawing.Size(289, 371);
+            this.cv02gridPopulation.TabIndex = 8;
+            // 
             // canvas
             // 
             this.canvas.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -415,16 +442,6 @@
             this.chart.Size = new System.Drawing.Size(427, 371);
             this.chart.TabIndex = 4;
             this.chart.Text = "chart1";
-            // 
-            // cv02btnCamera
-            // 
-            this.cv02btnCamera.Location = new System.Drawing.Point(144, 62);
-            this.cv02btnCamera.Name = "cv02btnCamera";
-            this.cv02btnCamera.Size = new System.Drawing.Size(52, 20);
-            this.cv02btnCamera.TabIndex = 17;
-            this.cv02btnCamera.Text = "Camera";
-            this.cv02btnCamera.UseVisualStyleBackColor = true;
-            this.cv02btnCamera.Click += new System.EventHandler(this.cv02btnCamera_Click);
             // 
             // Form1
             // 
@@ -484,6 +501,7 @@
         private System.Windows.Forms.TextBox cv02txtIteration;
         private System.Windows.Forms.ComboBox cv02cmbAlgo;
         private System.Windows.Forms.Button cv02btnCamera;
+        private System.Windows.Forms.TextBox cv02txtParameters;
     }
 }
 

@@ -116,7 +116,15 @@ namespace biaenv
         {
             ILScene scene = null;
             //bool resetcam=false;
-            //Matrix4 rotation = default(Matrix4);
+            Matrix4 rotation = default(Matrix4);
+            try
+            {
+                rotation = panel.GetCurrentScene().First<ILPlotCube>().Rotation;
+            }
+            catch 
+            {
+                rotation = Matrix4.Rotation(new Vector3(2, 0.55, 0.64), Math.PI / 2);
+            }
             //if (panel.Scene.First<ILPlotCube>() == null)
             //    resetcam = true;
             //else
@@ -139,9 +147,8 @@ namespace biaenv
             };
             panel.Scene = scene;
             //if (resetcam)
-                panel.ResetCamera(refresh);
-            //else
-            //    panel.ResetCamera(rotation, refresh);
+            //    panel.ResetCamera(refresh);
+            panel.ResetCamera(rotation, refresh);
         }
 
 
@@ -166,16 +173,24 @@ namespace biaenv
 
         public static void ResetCamera(this ILPanel panel, Matrix4 rotation, bool refresh = true)
         {
-            if(panel.Scene.First<ILPlotCube>()!=null)
+            try
+            {
                 panel.Scene.First<ILPlotCube>().Rotation = rotation;
+                panel.GetCurrentScene().First<ILPlotCube>().Rotation = rotation;
+            }
+            catch { }
+            /*if(panel.Scene.First<ILPlotCube>()!=null)
+                panel.Scene.First<ILPlotCube>().Rotation = rotation;
+            */
             if(refresh)
                 panel.Refresh();
+             
         }
 
-        public static void ResetCamera(this ILPanel panel, bool refresh=true) 
+        /*public static void ResetCamera(this ILPanel panel, bool refresh=true) 
         {
             ResetCamera(panel, Matrix4.Rotation(new Vector3(2, 0.55, 0.64), Math.PI / 2), refresh);
-        }
+        }*/
 
         public static void EmphasizeFitness(this DataGridView g) 
         {

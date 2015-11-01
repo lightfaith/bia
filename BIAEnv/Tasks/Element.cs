@@ -107,7 +107,7 @@ namespace Tasks
                 }
                 population.Add(new Element(x, y, f(new float[] { x, y })));
             }
-            population.ComputeFitness();
+            //fitness computed when shown
         }
     }
 
