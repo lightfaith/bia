@@ -102,8 +102,8 @@ namespace Tasks
                 }
                 else
                 {
-                    x = r.Next() % ((Functions.Max - Functions.Min) * 1000) / 1000 + Functions.Min;
-                    y = r.Next() % ((Functions.Max - Functions.Min) * 1000) / 1000 + Functions.Min;
+                    x = r.Next() % ((Functions.Max - Functions.Min) * 100000) / 100000 + Functions.Min;
+                    y = r.Next() % ((Functions.Max - Functions.Min) * 100000) / 100000 + Functions.Min;
                 }
                 population.Add(new Element(x, y, f(new float[] { x, y })));
             }

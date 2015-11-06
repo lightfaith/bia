@@ -40,6 +40,8 @@ namespace Tasks
                 }
             }
         }
+
+        public abstract void ResetParameters();
     }
 
     public class Blind : Algorithm
@@ -47,7 +49,7 @@ namespace Tasks
         public Blind()
         {
             Name = "Blind Search";
-            ps = new Dictionary<string, float>();
+            ResetParameters();
         }
 
         public override List<Element> Run(List<Element> population, Lib.func f, bool integer)
@@ -63,6 +65,11 @@ namespace Tasks
             result.AddPopulation(population.Count - 1, f, integer);
             return result;
         }
+
+        public override void ResetParameters()
+        {
+            ps = new Dictionary<string, float>();
+        }
     }
 
     public class SimulatedAnnealing : Algorithm
@@ -70,11 +77,8 @@ namespace Tasks
         public SimulatedAnnealing()
         {
             Name = "Simulated Annealing";
-            ps = new Dictionary<string, float>();
-            ps.Add("T0", 1f);
-            ps.Add("Tf", 0.05f);
-            ps.Add("alfa", 0.95f);
-            ps.Add("nT", 10f);
+            ResetParameters();
+            
         }
 
         public override List<Element> Run(List<Element> population, Lib.func f, bool integer)
@@ -83,8 +87,9 @@ namespace Tasks
             List<Element> result = new List<Element>();
             result.AddRange(population);
             
-            float t = ps["T0"];
-            while (t >= ps["Tf"]) //while warm enough
+            //float t = ps["T0"];
+           // while (t >= ps["Tf"]) //while warm enough
+            if(ps["T"]>=ps["Tf"])
             {
                 for(int i=0; i<result.Count; i++) // for each element
                 {
@@ -97,8 +102,8 @@ namespace Tasks
                         Element parent = result[i];
                         for (int k = 0; k < ps["nT"]; k++) //number of neighbors often same as number of Metropolis repetitions
                         {
-                            float x = parent.X + t * (float)(r.NextDouble()*max-max/2);
-                            float y = parent.Y + t * (float)(r.NextDouble() * max - max / 2);
+                            float x = parent.X + ps["T"] * (float)(r.NextDouble()*max-max/2);
+                            float y = parent.Y + ps["T"] * (float)(r.NextDouble() * max - max / 2);
 
                             if (x < Functions.Min)
                                 x = Functions.Min;
@@ -121,16 +126,39 @@ namespace Tasks
                         //worse? if lucky enough, use it
                         {
                             float badluck = (float)r.NextDouble();
-                            float exp = (float)Math.Pow(Math.E, -(chosenone.Z-parent.Z)/t);
+                            float exp = (float)Math.Pow(Math.E, -(chosenone.Z - parent.Z) / ps["T"]);
                             if (badluck < exp)
                                 result[i] = chosenone;
                         }
                     }
                 }
-                t *= ps["alfa"];
+                ps["T"] *= ps["alfa"];
             }
             return result;
         }
+
+        public override void ResetParameters()
+        {
+            ps = new Dictionary<string, float>();
+            ps.Add("T0", 1f);
+            ps.Add("Tf", 0.05f);
+            ps.Add("alfa", 0.95f);
+            ps.Add("nT", 10f);
+            ps.Add("T", 1f);
+        }
     }
 
+    //dif evol - skripta 101
+    //cr=0.6 - prah kdy k mutaci dojde
+    //f=0.7 - mutacni konstanta - velikost mutace
+    //populace min 4
+
+    public static class Algorithms 
+    {
+        public static void ResetParameters(this List<Algorithm> algos) 
+        {
+            foreach (Algorithm a in algos)
+                a.ResetParameters();
+        }
+    }
 }

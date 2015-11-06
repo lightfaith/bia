@@ -36,6 +36,8 @@ namespace biaenv
             //e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
         }
 
+
+
         private void Form1_Load(object sender, EventArgs e)
         {
             canvas.Init();
@@ -46,6 +48,9 @@ namespace biaenv
             algos.Add(new SimulatedAnnealing());
 
             cv02cmbAlgo.DataSource = algos;
+            setAlgos();
+
+            tabControl.SelectedIndex = 1;
         }
 
         private void cv01btnCount_Click(object sender, EventArgs e)
@@ -186,10 +191,14 @@ namespace biaenv
             cv02gridPopulation.Refresh();
             il.Plot(f, Functions.Min, Functions.Max, Functions.Precision, false);
             il.DrawPoints(population, Functions.Min, Functions.Max, Functions.Precision);
+            setAlgos();
+
         }
 
         private void cv02btnStep_Click(object sender, EventArgs e)
         {
+            if (population == null || population.Count == 0)
+                return;
             Lib.func f = Functions.GetFunctionByIndex(cv02cmbFunction.SelectedIndex);
             if (f == null)
                 return;
@@ -201,6 +210,7 @@ namespace biaenv
             a.UpdateParameters(cv02txtParameters.Text);
             for (int i = 0; i < generations; i++)
                 population.Evolve(a, f, cv02checkInteger.Checked);
+            cv02txtParameters.Text = a.GetParameters();
             population.ComputeFitness();
 
             cv02gridPopulation.DataSource = population;
@@ -227,6 +237,17 @@ namespace biaenv
 
         private void cv02cmbAlgo_SelectedIndexChanged(object sender, EventArgs e)
         {
+            setAlgos();
+        }
+
+        private void setAlgos()
+        {
+            algos.ResetParameters();
+
+            //int index = cv02cmbAlgo.SelectedIndex;
+            
+            //if (index > 0 && index < algos.Count)
+            //    cv02cmbAlgo.SelectedIndex = index;
             cv02txtParameters.Text = ((Algorithm)cv02cmbAlgo.SelectedItem).GetParameters();
         }
     }
