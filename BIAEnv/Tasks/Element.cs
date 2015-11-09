@@ -28,6 +28,15 @@ namespace Tasks
             Z = f(new float[] { x, y });
         }
 
+        public bool IsInInterval()
+        {
+            if (X < Functions.Min || Y < Functions.Min)
+                return false;
+            if (X > Functions.Max || Y > Functions.Max)
+                return false;
+            return true;
+        }
+
         private static float GetExtreme(Lib.func f, int n = 3)
         {
             if (f == Functions.FirstDeJong) return (float)0.00001;
@@ -72,8 +81,11 @@ namespace Tasks
             {
                 result = algo.Run(elements, f, integer);
             }
-            elements.Clear();
-            elements.AddRange(result);
+            if (elements != result)
+            {
+                elements.Clear();
+                elements.AddRange(result);
+            }
         }
 
         public static void ComputeFitness(this List<Element> elements) 

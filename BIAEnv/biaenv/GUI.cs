@@ -207,7 +207,8 @@ namespace biaenv
                 }
                 g.Rows[i].Selected = false;
             }
-            g.Rows[bestindex].Selected = true;
+            if(g.Rows.Count>0)
+                g.Rows[bestindex].Selected = true;
         }
 
         public static void Plot(this Chart chart, Dictionary<int, float> input)
