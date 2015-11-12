@@ -47,6 +47,7 @@ namespace biaenv
             algos.Add(new Blind());
             algos.Add(new SimulatedAnnealing());
             algos.Add(new DifferentialEvolution());
+            algos.Add(new SOMA());
             cv02cmbAlgo.DataSource = algos;
             setAlgos();
 

@@ -168,27 +168,38 @@ namespace Tasks
             List<Element> result = new List<Element>();
             for (int i = 0; i < population.Count; i++) //for each element
             {
-                //get 3 different elements
+                //get 3 different elements in interval
                 int[] rands = new int[3];
-                do { rands[0] = r.Next(population.Count); } while (rands[0] == i);
-                do { rands[1] = r.Next(population.Count); } while (rands[1] == i || rands[1]==rands[0]);
-                do { rands[2] = r.Next(population.Count); } while (rands[2] == i || rands[2] == rands[0] || rands[2]==rands[1]);
                 Element[] parents = new Element[4];
-                parents[0] = population[i];
-                parents[1] = population[rands[0]];
-                parents[2] = population[rands[1]];
-                parents[3] = population[rands[2]];
+                Element diff = new Element(0, 0, 0); //unassigned value, will (should!) be different
+                Element noisy = new Element(0, 0, 0);//unassigned value, will (should!) be different
+                Element trial = new Element(0, 0, 0);//unassigned value, will (should!) be different
+                while (true) //until child in interval is found
+                {
+                    do { rands[0] = r.Next(population.Count); } while (rands[0] == i);
+                    do { rands[1] = r.Next(population.Count); } while (rands[1] == i || rands[1] == rands[0]);
+                    do { rands[2] = r.Next(population.Count); } while (rands[2] == i || rands[2] == rands[0] || rands[2] == rands[1]);
 
-                //get noisy vector (mutation)
-                Element diff = new Element(parents[1].X-parents[2].X, parents[1].Y-parents[2].Y, f);
-                Element noisy = new Element(parents[3].X+ps["F"]*diff.X, parents[3].Y+ps["F"]*diff.Y, f);
+                    parents[0] = population[i];
+                    parents[1] = population[rands[0]];
+                    parents[2] = population[rands[1]];
+                    parents[3] = population[rands[2]];
 
-                //get trial vector (intersection)
-                Element trial = new Element((r.Next(1) < ps["CR"] ? noisy.X : parents[0].X), 
-                    (r.Next(1) < ps["CR"] ? noisy.Y : parents[0].Y), f);
+                    //get noisy vector (mutation)
+                    diff = new Element(parents[1].X - parents[2].X, parents[1].Y - parents[2].Y, 0);
 
+
+                    noisy = new Element(parents[3].X + ps["F"] * diff.X, parents[3].Y + ps["F"] * diff.Y, 0);
+
+                    //get trial element (intersection)
+                    trial = new Element((r.Next(1) < ps["CR"] ? noisy.X : parents[0].X),
+                        (r.Next(1) < ps["CR"] ? noisy.Y : parents[0].Y), f);
+
+                    if (trial.IsInInterval())
+                        break;
+                }
                 //use parent or trial, whichever is better
-                if (trial.IsInInterval() && trial.Z < parents[0].Z)
+                if (trial.Z < parents[0].Z)
                     result.Add(trial);
                 else
                     result.Add(parents[0]);
@@ -201,6 +212,86 @@ namespace Tasks
             ps = new Dictionary<string, float>();
             ps.Add("CR", 0.6f);
             ps.Add("F", 0.7f);
+        }
+    }
+
+
+    public class SOMA : Algorithm
+    {
+
+        public SOMA()
+        {
+            Name = "Somehow Optimized Migrating Approach";
+            ResetParameters();
+        }
+        private List<int> GetPRTVector(int size, Random r)
+        {
+            List<int> result = new List<int>();
+            for (int i = 0; i < size; i++)
+                result.Add((r.NextDouble() < ps["PRT"]) ? 1 : 0);
+            return result;
+        }
+        public override List<Element> Run(List<Element> population, Lib.func f, bool integer)
+        {
+            
+            if (ps["Migration"] <= 0)
+                return population;
+            //krizeni smeruje potomky
+            //t = krok = 0 (while t<pathlen)
+            //
+            Element leader = population[0];
+            Element worst = population[0];
+
+            foreach (Element e in population)
+            {
+                if (e.Z < leader.Z)
+                    leader = e;
+                if (e.Z > worst.Z)
+                    worst = e;
+            }
+            if (worst.Z - leader.Z < ps["MinDiv"])
+                return population;
+
+            Random r = new Random();
+            List<Element> result = new List<Element>();
+            for (int k = 0; k < population.Count; k++)
+            {
+                Element e = population[k];
+                if (e == leader)
+                {
+                    result.Add(e);
+                    continue;
+                }
+                List<Element> jumps = new List<Element>();
+                for (int i = 0; i < ps["PathLength"] / ps["Step"]; i++)
+                {
+                    List<int> prtv = GetPRTVector(2, r);
+                    Element leaderdiff = new Element(leader.X - e.X, leader.Y - e.Y, 0);
+                    Element onejump = new Element(e.X + leaderdiff.X * i * ps["Step"] * prtv[0], e.Y + leaderdiff.Y * i * ps["Step"] * prtv[1], f);
+                    if(onejump.IsInInterval())
+                        jumps.Add(onejump);
+                }
+                int bestindex = -1;
+                for (int j = 0; j < jumps.Count; j++)
+                {
+                    if (jumps[j].Z < e.Z) 
+                        bestindex = j;
+                }
+                result.Add((bestindex == -1) ? population[k] : jumps[bestindex]);
+            }
+            ps["Migration"]--;
+            return result;
+        }
+
+        public override void ResetParameters()
+        {
+            ps = new Dictionary<string, float>();
+            ps.Add("PathLength", 1.4f);
+            ps.Add("Step", 0.11f);
+            ps.Add("PRT", 0.8f);
+            ps.Add("Migrations", 10); //number of generations, per Step
+            ps.Add("MinDiv", -1); //minimal difference between best and worst, <0 => ignored
+            ps.Add("Migration", 10);
         }
     }
 
