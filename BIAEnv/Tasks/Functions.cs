@@ -16,11 +16,15 @@ namespace Tasks
         public static float Max { get { return max; } set { max = value; } }
         public static float Precision { get { return precision; } set { precision = value; } }
 
+        //Random parameters
+        private static Random r = new Random();
+        private static double s = 0;
+        private static List<double> o = new List<double>();
 
         #region SHEKEL constants
-        private float[] Shekel_c = {0.806f, 0.517f, 0.1f, .908f, 0.965f, 0.669f, 0.524f, 0.902f, 0.531f, 0.876f, 0.462f, 0.491f, 0.463f, 0.714f, 0.352f, 0.869f, 0.813f, 0.811f,
+        private static float[] Shekel_c = {0.806f, 0.517f, 0.1f, .908f, 0.965f, 0.669f, 0.524f, 0.902f, 0.531f, 0.876f, 0.462f, 0.491f, 0.463f, 0.714f, 0.352f, 0.869f, 0.813f, 0.811f,
                                 0.828f, 0.964f, 0.789f, 0.360f, 0.369f, 0.992f, 0.332f, 0.817f, 0.632f, 0.883f, 0.608f, 0.326f};
-        private float[,] Shekel_a = 
+        private static float[,] Shekel_a = 
             {{9.681f, 0.667f, 4.783f, 9.095f, 3.517f, 9.325f, 6.544f, 0.211f, 5.122f, 2.020f},
             {9.400f, 2.041f, 3.788f, 7.931f, 2.882f, 2.672f, 3.568f, 1.284f, 7.033f, 7.374f},
             {8.025f, 9.152f, 5.114f, 7.621f, 4.564f, 4.711f, 2.996f, 6.126f, 0.734f, 4.982f},
@@ -53,14 +57,23 @@ namespace Tasks
             {4.138f, 2.562f, 2.532f, 9.661f, 5.611f, 5.500f, 6.886f, 2.341f, 9.699f, 6.500f}};
         #endregion
 
+        public static void RandomizeRandom(int dims)
+        {
+            s = r.NextDouble() * (Functions.Max - Functions.Min) / 5;
+            o.Clear();
+            for (int i = 0; i < dims; i++)
+            {
+                o.Add(r.NextDouble() * (Functions.Max - Functions.Min) + Functions.Min);
+            }
+        }
         public static void SetMeasures(String min, String max, String precision)
         {
             try { Functions.Min = (float)Double.Parse(min); }
-                catch (FormatException) { Functions.Min = -5; }
+            catch (FormatException) { Functions.Min = -5; }
             try { Functions.Max = (float)Double.Parse(max); }
-                catch (FormatException) { Functions.Max = -5; }
+            catch (FormatException) { Functions.Max = -5; }
             try { Functions.Precision = (float)Double.Parse(precision); }
-                catch (FormatException) { Functions.Precision = 1; }
+            catch (FormatException) { Functions.Precision = 1; }
         }
 
         /*
@@ -133,9 +146,9 @@ namespace Tasks
             for (int i = 0; i < dims.Length; i++)
             {
                 sum += dims[i] * dims[i] / 4000;
-                prod *= Math.Cos(dims[i] / Math.Sqrt(i+1));
+                prod *= Math.Cos(dims[i] / Math.Sqrt(i + 1));
             }
-            result = 1 + sum -prod;
+            result = 1 + sum - prod;
             return (float)result;
         }
 
@@ -143,24 +156,30 @@ namespace Tasks
         {
             double result = 0;
             for (int i = 0; i < dims.Length - 1; i++)
-                result -= 0.5 + Math.Pow(Math.Sin(dims[i] * dims[i] + dims[i + 1] * dims[i + 1] - 0.5), 2) / Math.Pow(1 + 0.001 * (dims[i] * dims[i] + dims[i + 1] * dims[i + 1]), 2);
-            return (float)result;
+                result += 0.5
+                    + Math.Pow(Math.Sin(dims[i] * dims[i] + dims[i + 1] * dims[i + 1] - 0.5), 2)
+                    / Math.Pow(1 + 0.001 * (dims[i] * dims[i] + dims[i + 1] * dims[i + 1]), 2);
+            return (float)-result;
         }
 
         public static float StretchedVSineWave(float[] dims)
         {
             double result = 0;
             for (int i = 0; i < dims.Length - 1; i++)
-                result += Math.Pow((dims[i] * dims[i] + dims[i + 1] * dims[i + 1]), 0.25) * Math.Sin(Math.Pow(50 * Math.Pow(dims[i] * dims[i] + dims[i + 1] * dims[i + 1], 0.1), 2) + 1);
+                result += Math.Pow((dims[i] * dims[i] + dims[i + 1] * dims[i + 1]), 0.25)
+                    * Math.Pow(Math.Sin(50 * Math.Pow(dims[i] * dims[i] + dims[i + 1] * dims[i + 1], 0.1)), 2) + 1;
             return (float)result;
         }
 
 
         public static float AckleyI(float[] dims)
         {
+            //BAD
             double result = 0;
             for (int i = 0; i < dims.Length - 1; i++)
-                result += 1 / Math.Pow(Math.E, 5) * Math.Sqrt(dims[i] * dims[i] + dims[i + 1] * dims[i + 1]) + 3 * (Math.Cos(2 * dims[i]) + Math.Sin(2 * dims[i + 1]));
+                result += 1 / Math.Pow(Math.E, 5)
+                    * Math.Sqrt(dims[i] * dims[i] + dims[i + 1] * dims[i + 1])
+                    + 3 * (Math.Cos(2 * dims[i]) + Math.Sin(2 * dims[i + 1]));
             return (float)result;
         }
 
@@ -168,7 +187,9 @@ namespace Tasks
         {
             double result = 0;
             for (int i = 0; i < dims.Length - 1; i++)
-                result += 20 + Math.E - (20 / Math.Pow(Math.E, 0.2 * Math.Sqrt((dims[i] * dims[i] + dims[i + 1] * dims[i + 1]) / 2))) - Math.Pow(Math.E, 0.5 * Math.Cos(2 * Math.PI * dims[i]) + Math.Cos(2 * Math.PI * dims[i + 1]));
+                result += 20 + Math.E
+                    - (20 / Math.Pow(Math.E, 0.2 * Math.Sqrt((dims[i] * dims[i] + dims[i + 1] * dims[i + 1]) / 2)))
+                    - Math.Pow(Math.E, 0.5 * Math.Cos(2 * Math.PI * dims[i]) + Math.Cos(2 * Math.PI * dims[i + 1]));
             return (float)result;
         }
 
@@ -184,7 +205,12 @@ namespace Tasks
         {
             double result = 0;
             for (int i = 0; i < dims.Length - 1; i++)
-                result += dims[i] * Math.Sin(Math.Sqrt(Math.Abs(dims[i + 1] + 1 - dims[i]))) * Math.Cos(Math.Sqrt(Math.Abs(dims[i + 1] + 1 + dims[i]))) + (dims[i + 1] + 1) * Math.Cos(Math.Sqrt(Math.Abs(dims[i + 1] + 1 - dims[i]))) * Math.Sin(Math.Sqrt(Math.Abs(dims[i + 1] + 1 + dims[i])));
+                result += dims[i]
+                    * Math.Sin(Math.Sqrt(Math.Abs(dims[i + 1] + 1 - dims[i])))
+                    * Math.Cos(Math.Sqrt(Math.Abs(dims[i + 1] + 1 + dims[i])))
+                    + (dims[i + 1] + 1)
+                    * Math.Cos(Math.Sqrt(Math.Abs(dims[i + 1] + 1 - dims[i])))
+                    * Math.Sin(Math.Sqrt(Math.Abs(dims[i + 1] + 1 + dims[i])));
             return (float)result;
         }
 
@@ -192,7 +218,9 @@ namespace Tasks
         {
             double result = 0;
             for (int i = 0; i < dims.Length - 1; i++)
-                result += 0.5 + (Math.Pow(Math.Sin(Math.Sqrt(100 * dims[i] * dims[i] - dims[i + 1] * dims[i + 1])), 2) - 0.5) / (1 + 0.001 * Math.Pow(dims[i] * dims[i] - 2 * dims[i] * dims[i + 1] + dims[i + 1] * dims[i + 1], 2));
+                result += 0.5
+                    + (Math.Pow(Math.Sin(Math.Sqrt(100 * dims[i] * dims[i] - dims[i + 1] * dims[i + 1])), 2) - 0.5)
+                    / (1 + 0.001 * Math.Pow(dims[i] * dims[i] - 2 * dims[i] * dims[i + 1] + dims[i + 1] * dims[i + 1], 2));
             return (float)result;
         }
 
@@ -212,12 +240,38 @@ namespace Tasks
             return (float)result;
         }
 
-        /*public static float4D TeaDivision(float x, float y)
-        { double result=0;
-            //TODO BAD
-            return ((x, y, z) => (float)(-(2 * x + 3 * y + 2 * z) * ((10 * x + 6 * y + 5 * z <= 2850) && (4 * y + 5 * z <= 1380) ? 1 : -100);
-        return (float)result; }
-        */
+        public static float TeaDivision(float[] dims)
+        {
+            //BAD
+            double result = 0;
+            int x3 = 0;
+            int g = (10 * dims[0] + 6 * dims[1] + 5 * x3 <= 2850 && 4 * dims[1] + 5 * x3 <= 1380) ? 1 : -100;
+            result = -(2 * dims[0] + 3 * dims[1] + 2 * x3) * g;
+            return (float)result;
+        }
+
+        public static float ShekelFoxhole(float[] dims)
+        {
+            double result = 0;
+            for (int j = 0; j < 30; j++)
+            {
+                double minisum = 0;
+                for (int i = 0; i < dims.Length; i++)
+                    minisum += Math.Pow(dims[i] - Shekel_a[j, i], 2);
+                result += 1 / (Shekel_c[j] + minisum);
+            }
+            return (float)-result;
+        }
+
+        public static float PseudoDirac(float[] dims)
+        {
+            Random r = new Random();
+            double result = 1;
+            for (int i = 0; i < dims.Length; i++)
+                result *= Math.Sqrt(s / Math.PI)
+                   / Math.Pow(Math.E, s * Math.Pow(dims[i] - o[i], 2));
+            return -(float)result;
+        }
 
         public static float Pareto(float[] dims)
         {
@@ -232,9 +286,9 @@ namespace Tasks
             return (float)(Math.Pow(f / g, alfa) - (f / g) * Math.Sin(Math.PI * freq * f * g));
         }
 
-        public static Lib.func GetFunctionByIndex(int i) 
+        public static Lib.func GetFunctionByIndex(int i)
         {
-            switch (i) 
+            switch (i)
             {
                 case 1: return FirstDeJong;
                 case 2: return RosenbrockSaddle;
@@ -252,7 +306,10 @@ namespace Tasks
                 case 14: return Pathological;
                 case 15: return Michalewicz;
                 case 16: return MastersCosineWave;
-                case 21: return Pareto;
+                case 17: return TeaDivision;
+                case 18: return ShekelFoxhole;
+                case 19: return PseudoDirac;
+                case 20: return Pareto;
                 default: return null;
             }
         }

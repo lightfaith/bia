@@ -371,7 +371,6 @@
             "Tea Division",
             "Shekel\'s Foxhole",
             "Pseudo-Dirak\'s Function",
-            "Fractal Function",
             "Pareto"});
             this.cv02cmbFunction.Location = new System.Drawing.Point(6, 6);
             this.cv02cmbFunction.Name = "cv02cmbFunction";

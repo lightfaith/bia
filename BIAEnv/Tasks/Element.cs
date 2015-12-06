@@ -11,9 +11,9 @@ namespace Tasks
         public float X { get; set; }
         public float Y { get; set; }
         public float Z { get; set; }
-        public float Fitness {get; set;}
+        public float Fitness { get; set; }
 
-        
+
         public Element(float x, float y, float z)
         {
             X = x;
@@ -58,6 +58,21 @@ namespace Tasks
 
             return 0; //default
         }
+
+        public override string ToString()
+        {
+            return String.Format("X={0}  Y={1}  Z={2}", X, Y, Z);
+        }
+    }
+
+    public class ElementComparer : IComparer<Element>
+    {
+
+        public int Compare(Element x, Element y)
+        {
+            float diff = x.Z - y.Z;
+            return Math.Sign(diff);
+        }
     }
 
     public static class Elements
@@ -74,7 +89,7 @@ namespace Tasks
             return result;
         }
 
-        public static void Evolve(this List<Element> elements, Algorithm algo, Lib.func f, bool integer) 
+        public static void Evolve(this List<Element> elements, Algorithm algo, Lib.func f, bool integer)
         {
             List<Element> result = new List<Element>();
             if (algo is Algorithm)
@@ -88,19 +103,27 @@ namespace Tasks
             }
         }
 
-        public static void ComputeFitness(this List<Element> elements) 
+        public static void ComputeFitness(this List<Element> elements)
         {
             float total = 0;
+            float sum = 0;
+            float best = elements[0].Z;
             foreach (Element e in elements)
-                total += e.Z;
+            {
+                sum += e.Z;
+                total += Math.Abs(e.Z);
+                if (best > e.Z)
+                    best = e.Z;
+            }
+            float avg = sum / elements.Count;
             foreach (Element e in elements)
-                e.Fitness = 1-(e.Z / total);
+                e.Fitness = 1 - Math.Abs((best - e.Z) / total) - Math.Abs((best - avg) / total);
         }
 
         public static void AddPopulation(this List<Element> population, int count, Lib.func f, bool integer)
         {
             Random r = new Random();
-            
+
             if (f == null)
                 return;
             for (int i = 0; i < count; i++)

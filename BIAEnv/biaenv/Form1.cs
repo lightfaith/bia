@@ -48,6 +48,7 @@ namespace biaenv
             algos.Add(new SimulatedAnnealing());
             algos.Add(new DifferentialEvolution());
             algos.Add(new SOMA());
+            algos.Add(new EvolutionalStrategy());
             cv02cmbAlgo.DataSource = algos;
             setAlgos();
 
@@ -153,10 +154,10 @@ namespace biaenv
         {
             //MessageBox.Show(il.Scene.First<ILPlotCube>().Rotation.ToString());
             //il.Scene.First<ILPlotCube>().Rotation = Matrix4.Rotation(new Vector3(Convert.ToDouble(cv02txtMin.Text), Convert.ToDouble(cv02txtMax.Text), Convert.ToDouble(cv02txtStep.Text)), Math.PI / 2);
-            Functions.SetMeasures(cv02txtMin.Text, cv02txtMax.Text, cv02txtStep.Text);
-
+            Functions.SetMeasures(cv02txtMin.Text, cv02txtMax.Text, cv02txtStep.Text.Replace(".", ","));
+            Functions.RandomizeRandom(2);
             int index = cv02cmbFunction.SelectedIndex;
-            if (index > 0 && index <= 16 || index == 21)
+            if (index > 0 && index <= 20)
                 il.Plot(Functions.GetFunctionByIndex(index), Functions.Min, Functions.Max, Functions.Precision);
             else
             {
@@ -175,6 +176,7 @@ namespace biaenv
         private void cv02btnPopulate_Click(object sender, EventArgs e)
         {
             Functions.SetMeasures(cv02txtMin.Text, cv02txtMax.Text, cv02txtStep.Text);
+            Functions.RandomizeRandom(2);
 
             int populsize;
             try { populsize = Int32.Parse(cv02txtPopulation.Text); }

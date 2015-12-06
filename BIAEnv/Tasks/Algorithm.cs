@@ -221,7 +221,7 @@ namespace Tasks
 
         public SOMA()
         {
-            Name = "Somehow Optimized Migrating Approach";
+            Name = "Self-Organizing Migrating Algorithm";
             ResetParameters();
         }
         private List<int> GetPRTVector(int size, Random r)
@@ -233,7 +233,7 @@ namespace Tasks
         }
         public override List<Element> Run(List<Element> population, Lib.func f, bool integer)
         {
-            
+
             if (ps["Migration"] <= 0)
                 return population;
             //krizeni smeruje potomky
@@ -268,13 +268,13 @@ namespace Tasks
                     List<int> prtv = GetPRTVector(2, r);
                     Element leaderdiff = new Element(leader.X - e.X, leader.Y - e.Y, 0);
                     Element onejump = new Element(e.X + leaderdiff.X * i * ps["Step"] * prtv[0], e.Y + leaderdiff.Y * i * ps["Step"] * prtv[1], f);
-                    if(onejump.IsInInterval())
+                    if (onejump.IsInInterval())
                         jumps.Add(onejump);
                 }
                 int bestindex = -1;
                 for (int j = 0; j < jumps.Count; j++)
                 {
-                    if (jumps[j].Z < e.Z) 
+                    if (jumps[j].Z < e.Z)
                         bestindex = j;
                 }
                 result.Add((bestindex == -1) ? population[k] : jumps[bestindex]);
@@ -295,6 +295,91 @@ namespace Tasks
         }
     }
 
+    public class EvolutionalStrategy : Algorithm
+    {
+        public EvolutionalStrategy()
+        {
+            Name = "Evolutional Strategy";
+            ResetParameters();
+        }
+
+        /*
+        private Element GetDeviation(float mi, float delta, Lib.func f)
+        {
+            float a = (Functions.Max - Functions.Min) / 2;
+            Random r = new Random();
+            float x = (float)(r.NextDouble() * (Functions.Max - Functions.Min) + Functions.Min)/50;
+            float y = (float)(r.NextDouble() * (Functions.Max - Functions.Min) + Functions.Min)/50;
+            delta = delta * ps["Range"];
+            float xgauss = (float)(1 / (Math.Sqrt(2 * Math.PI)) * a * Math.Pow(Math.E, -Math.Pow(x - mi, 2) / (2 * delta * delta)));
+            float ygauss = (float)(1 / (Math.Sqrt(2 * Math.PI)) * a * Math.Pow(Math.E, -Math.Pow(y - mi, 2) / (2 * delta * delta)));
+            return new Element(xgauss, ygauss, f);
+        }*/
+
+        public override List<Element> Run(List<Element> population, Lib.func f, bool integer)
+        {
+            if (ps["Iteration"] >= ps["Iterations"])
+                return population;
+            Random r = new Random();
+            List<Element> result = new List<Element>();
+            Element best = population[0];
+            foreach (Element e in population)
+                if (e.Fitness > best.Fitness)
+                    best = e;
+            if (best.Fitness > ps["FV"])
+                return population;
+            List<Element> children = new List<Element>();
+
+
+            foreach (Element e in population)
+            {
+                for (int i = 0; i < ps["Children"]; i++)
+                {
+                    Element newelement = null;
+                    while (newelement == null || !newelement.IsInInterval())
+                    {
+                        /*double r = Math.Pow(Math.Pow(best.X - e.X, 2) + Math.Pow(best.Y - e.Y, 2) + Math.Pow(best.Z - e.Z, 2), 0.5);
+
+                        float delta = (r == 0) ? 0.1f : (float)(1.224 * r / population.Count);
+                        if (inficounter >= 10)
+                            delta /= inficounter;
+                        Element deviation = GetDeviation(0, delta, f);*/
+                        float newx = e.X + (float)(r.NextDouble() * (Functions.Max - Functions.Min) + Functions.Min) * ps["Range"];
+                        float newy = e.Y + (float)(r.NextDouble() * (Functions.Max - Functions.Min) + Functions.Min) * ps["Range"];
+                        newelement = new Element(newx, newy, f);
+                    }
+                    children.Add(newelement);
+                }
+            }
+
+            result.AddRange(children);
+            if (ps["Elitism"] == 1)
+                result.AddRange(population);
+
+            result.Sort(new ElementComparer());
+            while (result.Count > population.Count)
+                result.RemoveAt(population.Count);
+
+            ps["Iteration"]++;
+
+            //(fmax-fmin)*range;
+            return result;
+        }
+
+        public override void ResetParameters()
+        {
+            ps = new Dictionary<string, float>();
+            //+ - best from parents and children (elitism)
+            //, - best from children (no elitism)
+            ps.Add("Elitism", 1f);
+            //ps.Add("Range", 0.03f);
+            ps.Add("Range", 0.1f);
+            ps.Add("FV", 0.9999f); //desired fitness
+            ps.Add("Children", 4f);
+            ps.Add("Iterations", 30);
+            ps.Add("Iteration", 0);
+        }
+    }
 
     public static class Algorithms
     {

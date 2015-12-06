@@ -205,9 +205,10 @@ namespace biaenv
                     bestindex = i;
                     bestfitness = source[i].Fitness;
                 }
-                g.Rows[i].Selected = false;
+                if (g.Rows.Count > i)
+                    g.Rows[i].Selected = false;
             }
-            if(g.Rows.Count>0)
+            if(g.Rows.Count>bestindex)
                 g.Rows[bestindex].Selected = true;
         }
 
