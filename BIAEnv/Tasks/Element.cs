@@ -117,7 +117,12 @@ namespace Tasks
             }
             float avg = sum / elements.Count;
             foreach (Element e in elements)
-                e.Fitness = 1 - Math.Abs((best - e.Z) / total) - Math.Abs((best - avg) / total);
+            {
+                if (total == 0)
+                    e.Fitness = 1;
+                else
+                     e.Fitness = 1 - Math.Abs((best - e.Z) / total) - Math.Abs((best - avg) / total);
+            }
         }
 
         public static void AddPopulation(this List<Element> population, int count, Lib.func f, bool integer)
