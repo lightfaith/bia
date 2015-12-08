@@ -273,6 +273,16 @@ namespace Tasks
             return -(float)result;
         }
 
+        public static float Fractal(float[] dims) 
+        {
+            double result = 0;
+            float b=1.2f;
+            for (int i = 0; i < dims.Length; i++)
+                for (float j = Functions.Min; j < Functions.Max; j++)
+                    result+=(1-Math.Cos(Math.Pow(b, j)*dims[i]))/Math.Pow(b,(2-dims.Length)*j);
+            return (float)result;
+        }
+
         public static float Pareto(float[] dims)
         {
             float f = dims[0];
@@ -309,7 +319,8 @@ namespace Tasks
                 case 17: return TeaDivision;
                 case 18: return ShekelFoxhole;
                 case 19: return PseudoDirac;
-                case 20: return Pareto;
+                case 20: return Fractal;
+                case 21: return Pareto;
                 default: return null;
             }
         }
